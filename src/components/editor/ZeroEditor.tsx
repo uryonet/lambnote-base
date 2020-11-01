@@ -4,14 +4,21 @@ import { EditorState } from 'prosemirror-state'
 import { EditorView } from 'prosemirror-view'
 import { DOMParser } from 'prosemirror-model'
 import { pmPlugins } from '../../lib/prosemirror/PmPlugins'
-import { useSelector } from 'react-redux'
-import { selectPageContent, selectPageContentRaw } from '../../store/NoteSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  selectPageContent,
+  UpdateContent,
+  updatePageTitle
+} from '../../store/NoteSlice'
 import { schema } from 'prosemirror-schema-basic'
 import { PrimaryButton, TextField, ITextFieldStyles } from '@fluentui/react'
+import { AppDispatch } from '../../app/store'
+import graphService from '../../lib/GraphService'
 
 export const ZeroEditor: React.FC = () => {
-  const content = useSelector(selectPageContentRaw)
-  const { title, body } = useSelector(selectPageContent)
+  const dispatch: AppDispatch = useDispatch()
+
+  const { pageRaw, pageId, title } = useSelector(selectPageContent)
   const [pageTitle, setPageTitle] = useState('')
 
   const pmEditor = useRef<HTMLDivElement>(null)
@@ -43,19 +50,24 @@ export const ZeroEditor: React.FC = () => {
 
   //NoteContentStateが更新された場合のみ動作する
   useEffect(() => {
+    console.log(pageRaw)
     if (renderFlgRef.current) {
       console.log('editorStateの更新')
-      const doc = DOMParser.fromSchema(mySchema()).parse(body)
-      const editorState = EditorState.create({
-        doc,
-        plugins: pmPlugins()
-      })
-      eView.current?.updateState(editorState)
+      // const doc = DOMParser.fromSchema(mySchema()).parse(body)
+      // const editorState = EditorState.create({
+      //   doc,
+      //   plugins: pmPlugins()
+      // })
+      // eView.current?.updateState(editorState)
       setPageTitle(title)
     } else {
       renderFlgRef.current = true
     }
-  }, [content])
+  }, [pageRaw])
+
+  const patchPageTitle = () => {
+    dispatch(updatePageTitle(pageId, pageTitle))
+  }
 
   const handleChange = (e: any, value: string | undefined) => {
     value ? setPageTitle(value) : setPageTitle('')
@@ -63,7 +75,7 @@ export const ZeroEditor: React.FC = () => {
 
   return (
     <div className="zero-editor">
-      <PrimaryButton text="保存" />
+      <PrimaryButton text="保存" onClick={patchPageTitle} />
       <TextField
         className="title-editor"
         underlined

@@ -8,21 +8,44 @@ interface NoteState {
   currentNoteId: string | undefined
   notebooks: Notebook[]
   pages: OnenotePage[]
-  content: string
+  page: PageInfo
+}
+
+interface PageInfo {
+  pageRaw: string
+  pageId: string
+  title: string
 }
 
 const initialState: NoteState = {
   currentNoteId: undefined,
   notebooks: [],
   pages: [],
-  content: ''
+  page: {
+    pageRaw: '',
+    pageId: '',
+    title: ''
+  }
+}
+
+export interface UpdateContent {
+  target: string
+  action: string
+  content: string
 }
 
 export const fetchPageContent = createAsyncThunk(
   'page/content',
   async (arg: { pageId: string }) => {
     const { pageId } = arg
-    return await graphService.getPageContent(pageId)
+    const pageRaw = await graphService.getPageContent(pageId)
+    const { title } = new DOMParser().parseFromString(pageRaw, 'text/html')
+    const page: PageInfo = {
+      pageRaw,
+      pageId,
+      title
+    }
+    return page
   }
 )
 
@@ -38,19 +61,27 @@ export const noteSlice = createSlice({
     },
     setPageData: (state, action: PayloadAction<OnenotePage[]>) => {
       state.pages = action.payload
+    },
+    setPageTitle: (state, action: PayloadAction<string>) => {
+      state.page.title = action.payload
     }
   },
   extraReducers: (builder) => {
     builder.addCase(fetchPageContent.fulfilled, (state, action) => {
       return {
         ...state,
-        content: action.payload
+        page: action.payload
       }
     })
   }
 })
 
-export const { setNoteId, setNotebookData, setPageData } = noteSlice.actions
+export const {
+  setNoteId,
+  setNotebookData,
+  setPageData,
+  setPageTitle
+} = noteSlice.actions
 
 export const fetchNoteData = (): AppThunk => async (dispatch) => {
   try {
@@ -76,6 +107,27 @@ export const fetchPageData = (sectionId: string): AppThunk => async (
   }
 }
 
+export const updatePageTitle = (
+  pageId: string,
+  title: string
+): AppThunk => async (dispatch) => {
+  try {
+    const stream: UpdateContent[] = [
+      {
+        target: 'title',
+        action: 'replace',
+        content: title
+      }
+    ]
+    const result = await graphService.updatePageTitle(pageId, stream)
+    if (result) {
+      dispatch(setPageTitle(title))
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}
+
 export const selectNoteList = (state: RootState) => {
   const noteList: IDropdownOption[] = []
   state.note.notebooks.forEach((note) => {
@@ -93,9 +145,6 @@ export const selectSectionList = (state: RootState) => {
 
 export const selectPageList = (state: RootState) => state.note.pages
 
-export const selectPageContent = (state: RootState): Document =>
-  new DOMParser().parseFromString(state.note.content, 'text/html')
-export const selectPageContentRaw = (state: RootState): string =>
-  state.note.content
+export const selectPageContent = (state: RootState): PageInfo => state.note.page
 
 export default noteSlice.reducer

@@ -2,6 +2,7 @@ import * as graph from '@microsoft/microsoft-graph-client'
 import * as authService from './AuthService'
 import { AuthProviderCallback, Client } from '@microsoft/microsoft-graph-client'
 import { Notebook, OnenotePage, User } from '@microsoft/microsoft-graph-types'
+import { UpdateContent } from '../store/NoteSlice'
 
 class GraphService {
   private async getAuthClient(): Promise<Client> {
@@ -66,6 +67,24 @@ class GraphService {
       }
     })
     return await new Response(stream).text()
+  }
+
+  async updatePageTitle(pageId: string, stream: UpdateContent[]): Promise<boolean> {
+    // const json = JSON.stringify(stream)
+    const json = [
+      {
+        'target': 'title',
+        'action': 'replace',
+        'content': '調査変更後'
+      }
+    ]
+    console.log(json)
+    const client = await this.getAuthClient()
+    const response = await client
+      .api('/me/onenote/pages/' + pageId + '/content')
+      .patch(JSON.stringify(stream))
+    console.log(response)
+    return response
   }
 }
 
