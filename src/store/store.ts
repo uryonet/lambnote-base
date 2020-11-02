@@ -1,6 +1,6 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
-import userReducer from '../store/UserSlice'
-import noteReducer from '../store/NoteSlice'
+import userReducer from './UserSlice'
+import noteReducer from './NoteSlice'
 
 export const store = configureStore({
   reducer: {

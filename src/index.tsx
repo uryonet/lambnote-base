@@ -4,7 +4,7 @@ import './assets/index.scss'
 import { loadTheme } from '@fluentui/react'
 import { initializeIcons } from '@uifabric/icons'
 import App from './App'
-import { store } from './app/store'
+import { store } from './store/store'
 import { Provider } from 'react-redux'
 import * as serviceWorker from './serviceWorker'
 

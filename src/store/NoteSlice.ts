@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { AppThunk, RootState } from '../app/store'
+import { AppThunk, RootState } from './store'
 import graphService from '../lib/GraphService'
 import { Notebook, OnenotePage } from '@microsoft/microsoft-graph-types'
 import { IDropdownOption } from '@fluentui/react'

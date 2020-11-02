@@ -12,7 +12,7 @@ import {
 } from '../../store/NoteSlice'
 import { schema } from 'prosemirror-schema-basic'
 import { PrimaryButton, TextField, ITextFieldStyles } from '@fluentui/react'
-import { AppDispatch } from '../../app/store'
+import { AppDispatch } from '../../store/store'
 import graphService from '../../lib/GraphService'
 
 export const ZeroEditor: React.FC = () => {
