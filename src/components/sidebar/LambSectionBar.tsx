@@ -4,7 +4,7 @@ import { sidebarStyles } from './SidebarStyle'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchPageData, selectSectionList } from '../../store/NoteSlice'
 
-export const ZeroSectionBar: React.FC = () => {
+export const LambSectionBar: React.FC = () => {
   const dispatch = useDispatch()
 
   const sectionList = useSelector(selectSectionList)
@@ -21,7 +21,7 @@ export const ZeroSectionBar: React.FC = () => {
   }
 
   return (
-    <div className="zero-sectionbar">
+    <div className="lamb-sectionbar">
       <Nav groups={navLinkGroups()} styles={sidebarStyles} />
     </div>
   )

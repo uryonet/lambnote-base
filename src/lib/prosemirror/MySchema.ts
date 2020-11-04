@@ -34,15 +34,18 @@ export const mySchema = (): Schema => {
 
   if ('append' in schema.spec.nodes) {
     mySchema = new Schema({
+      // @ts-ignore
       nodes: addListNodes(
         // @ts-ignore
         schema.spec.nodes.append(tNodes),
         'paragraph block*',
         'block'
       ),
+      // @ts-ignore
       marks: schema.spec.marks
     })
   } else {
+    // @ts-ignore
     mySchema = schema
   }
 

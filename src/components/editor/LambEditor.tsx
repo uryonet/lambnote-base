@@ -13,9 +13,9 @@ import {
 import { schema } from 'prosemirror-schema-basic'
 import { PrimaryButton, TextField, ITextFieldStyles } from '@fluentui/react'
 import { AppDispatch } from '../../store/store'
-import graphService from '../../lib/GraphService'
+import graphService from '../../lib/graph/GraphService'
 
-export const ZeroEditor: React.FC = () => {
+export const LambEditor: React.FC = () => {
   const dispatch: AppDispatch = useDispatch()
 
   const { pageRaw, pageId, title } = useSelector(selectPageContent)
@@ -74,7 +74,7 @@ export const ZeroEditor: React.FC = () => {
   }
 
   return (
-    <div className="zero-editor">
+    <div className="lamb-editor">
       <PrimaryButton text="保存" onClick={patchPageTitle} />
       <TextField
         className="title-editor"

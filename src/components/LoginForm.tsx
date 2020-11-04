@@ -1,6 +1,6 @@
 import React from 'react'
 import { PrimaryButton } from '@fluentui/react'
-import * as authService from '../lib/AuthService'
+import * as authService from '../lib/graph/AuthService'
 
 export const LoginForm: React.FC = () => {
   return (

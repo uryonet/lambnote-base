@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchPageContent, selectPageList } from '../../store/NoteSlice'
 import { AppDispatch } from '../../store/store'
 
-export const ZeroPageBar: React.FC = () => {
+export const LambPageBar: React.FC = () => {
   const dispatch: AppDispatch = useDispatch()
 
   const pageList = useSelector(selectPageList)
@@ -22,7 +22,7 @@ export const ZeroPageBar: React.FC = () => {
   }
 
   return (
-    <div className="zero-pagebar">
+    <div className="lamb-pagebar">
       <Nav groups={navLinkGroups()} styles={sidebarStyles} />
     </div>
   )

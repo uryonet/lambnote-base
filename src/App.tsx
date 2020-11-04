@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
-import { ZeroHeader } from './components/ZeroHeader'
-import { ZeroSectionBar } from './components/sidebar/ZeroSectionBar'
-import { ZeroPageBar } from './components/sidebar/ZeroPageBar'
-import { ZeroEditor } from './components/editor/ZeroEditor'
+import { LambHeader } from './components/header/LambHeader'
+import { LambSectionBar } from './components/sidebar/LambSectionBar'
+import { LambPageBar } from './components/sidebar/LambPageBar'
+import { LambEditor } from './components/editor/LambEditor'
 import { LoginForm } from './components/LoginForm'
 
-import * as authService from './lib/AuthService'
+import * as authService from './lib/graph/AuthService'
 import { useDispatch } from 'react-redux'
 import { fetchUserData } from './store/UserSlice'
 import { fetchNoteData } from './store/NoteSlice'
@@ -23,11 +23,11 @@ const App: React.FC = () => {
   if (authService.isAuth()) {
     return (
       <div className="container">
-        <ZeroHeader />
+        <LambHeader />
         <div className="content">
-          <ZeroSectionBar />
-          <ZeroPageBar />
-          <ZeroEditor />
+          <LambSectionBar />
+          <LambPageBar />
+          <LambEditor />
         </div>
       </div>
     )

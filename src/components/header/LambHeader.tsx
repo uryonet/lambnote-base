@@ -6,12 +6,12 @@ import {
   Dropdown,
   IDropdownOption
 } from '@fluentui/react'
-import * as authService from '../lib/AuthService'
+import * as authService from '../../lib/graph/AuthService'
 import { useDispatch, useSelector } from 'react-redux'
-import { selectUser } from '../store/UserSlice'
-import { setNoteId, selectNoteList } from '../store/NoteSlice'
+import { selectUser } from '../../store/UserSlice'
+import { setNoteId, selectNoteList } from '../../store/NoteSlice'
 
-export const ZeroHeader: React.FC = () => {
+export const LambHeader: React.FC = () => {
   const dispatch = useDispatch()
 
   const user = useSelector(selectUser)
@@ -57,7 +57,7 @@ export const ZeroHeader: React.FC = () => {
   }
 
   return (
-    <header className="zero-header">
+    <header className="lamb-header">
       <h1>ZeroNote</h1>
       <Dropdown
         className="note-select"
