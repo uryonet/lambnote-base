@@ -36,7 +36,6 @@ export const { setUserData } = userSlice.actions
 export const fetchUserData = (): AppThunk => async (dispatch) => {
   try {
     const user = await graphService.getUserInfo()
-    console.log(user)
     const avatar = await graphService.getUserAvatar()
     const payload: UserState = {
       user: {

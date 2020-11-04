@@ -25,16 +25,24 @@ class GraphService {
     return (window.URL || window.webkitURL).createObjectURL(avatar)
   }
 
-  async getNotebooks(): Promise<Notebook[]> {
+  // LambNoteノートブックを取得する
+  async getLambNotebook(): Promise<Notebook[]> {
     const client = await this.getAuthClient()
     const response = await client
       .api('/me/onenote/notebooks')
-      .select('id,createdDateTime,displayName')
-      .expand('sections($select=id,createdDateTime,displayName)')
-      .orderby('displayName')
-      .version('beta')
+      .select('id,displayName')
+      .filter('displayName eq \'LambNote\'')
       .get()
     return response.value
+  }
+
+  // LambNoteノートブックを新規作成する
+  async createLambNotebook(): Promise<Notebook> {
+    const client = await this.getAuthClient()
+    const json = {"displayName":"LambNote"}
+    return await client
+      .api('/me/onenote/notebooks')
+      .post(json)
   }
 
   async getPages(sectionId: string): Promise<OnenotePage[]> {

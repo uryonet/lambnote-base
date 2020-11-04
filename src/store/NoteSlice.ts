@@ -5,7 +5,7 @@ import { Notebook, OnenotePage } from '@microsoft/microsoft-graph-types'
 import { IDropdownOption } from '@fluentui/react'
 
 interface NoteState {
-  currentNoteId: string | undefined
+  lambnoteId: string | undefined
   notebooks: Notebook[]
   pages: OnenotePage[]
   page: PageInfo
@@ -18,7 +18,7 @@ interface PageInfo {
 }
 
 const initialState: NoteState = {
-  currentNoteId: undefined,
+  lambnoteId: undefined,
   notebooks: [],
   pages: [],
   page: {
@@ -53,8 +53,8 @@ export const noteSlice = createSlice({
   name: 'note',
   initialState,
   reducers: {
-    setNoteId: (state, action: PayloadAction<string | undefined>) => {
-      state.currentNoteId = action.payload
+    setLambNoteId: (state, action: PayloadAction<string | undefined>) => {
+      state.lambnoteId = action.payload
     },
     setNotebookData: (state, action: PayloadAction<Notebook[]>) => {
       state.notebooks = action.payload
@@ -77,20 +77,25 @@ export const noteSlice = createSlice({
 })
 
 export const {
-  setNoteId,
+  setLambNoteId,
   setNotebookData,
   setPageData,
   setPageTitle
 } = noteSlice.actions
 
-export const fetchNoteData = (): AppThunk => async (dispatch) => {
+export const fetchLambNotebookData = (): AppThunk => async (dispatch) => {
   try {
-    const note = await graphService.getNotebooks()
-    console.log(note)
-    dispatch(setNotebookData(note))
+    const notebooks = await graphService.getLambNotebook()
+    console.log(notebooks)
+    let notebook: Notebook
+    if (notebooks.length == 0) {
+      notebook = await graphService.createLambNotebook()
+    } else {
+      notebook = notebooks[0]
+    }
+    dispatch(setLambNoteId(notebook.id))
   } catch (e) {
-    const emptyNotebooks: Notebook[] = []
-    dispatch(setNotebookData(emptyNotebooks))
+    dispatch(setLambNoteId(undefined))
   }
 }
 
@@ -138,7 +143,7 @@ export const selectNoteList = (state: RootState) => {
 
 export const selectSectionList = (state: RootState) => {
   const currentNote = state.note.notebooks.find(
-    (note) => note.id === state.note.currentNoteId
+    (note) => note.id === state.note.lambnoteId
   )
   return currentNote?.sections ?? []
 }
