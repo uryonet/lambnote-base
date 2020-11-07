@@ -1,19 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { mySchema } from '../../lib/prosemirror/MySchema'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch } from '../../store/store'
+import graphService from '../../lib/graph/GraphService'
+import { EditorTopMenu } from './itemprops/EditorTopMenu'
 import { EditorState } from 'prosemirror-state'
 import { EditorView } from 'prosemirror-view'
 import { DOMParser } from 'prosemirror-model'
+import { schema } from 'prosemirror-schema-basic'
+import { mySchema } from '../../lib/prosemirror/MySchema'
 import { pmPlugins } from '../../lib/prosemirror/PmPlugins'
-import { useDispatch, useSelector } from 'react-redux'
 import {
   selectPageContent,
   UpdateContent,
   updatePageTitle
 } from '../../store/NoteSlice'
-import { schema } from 'prosemirror-schema-basic'
 import { PrimaryButton, TextField, ITextFieldStyles } from '@fluentui/react'
-import { AppDispatch } from '../../store/store'
-import graphService from '../../lib/graph/GraphService'
 
 export const LambEditor: React.FC = () => {
   const dispatch: AppDispatch = useDispatch()
@@ -75,7 +76,7 @@ export const LambEditor: React.FC = () => {
 
   return (
     <div className="lamb-editor">
-      <PrimaryButton text="保存" onClick={patchPageTitle} />
+      <EditorTopMenu />
       <TextField
         className="title-editor"
         underlined

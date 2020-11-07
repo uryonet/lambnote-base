@@ -45,7 +45,7 @@ export const LambHeader: React.FC = () => {
 
   return (
     <header className="lamb-header">
-      <h1>ZeroNote</h1>
+      <h1>LambNote</h1>
       <IconButton
         className="user-icon"
         allowDisabledFocus={true}

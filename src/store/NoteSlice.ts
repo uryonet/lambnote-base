@@ -1,12 +1,11 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AppThunk, RootState } from './store'
 import graphService from '../lib/graph/GraphService'
-import { Notebook, OnenotePage } from '@microsoft/microsoft-graph-types'
-import { IDropdownOption } from '@fluentui/react'
+import { Notebook, OnenotePage, OnenoteSection } from "@microsoft/microsoft-graph-types";
 
 interface NoteState {
   lambnoteId: string | undefined
-  notebooks: Notebook[]
+  sections: OnenoteSection[]
   pages: OnenotePage[]
   page: PageInfo
 }
@@ -19,7 +18,7 @@ interface PageInfo {
 
 const initialState: NoteState = {
   lambnoteId: undefined,
-  notebooks: [],
+  sections: [],
   pages: [],
   page: {
     pageRaw: '',
@@ -29,6 +28,7 @@ const initialState: NoteState = {
 }
 
 export interface UpdateContent {
+
   target: string
   action: string
   content: string
@@ -56,8 +56,11 @@ export const noteSlice = createSlice({
     setLambNoteId: (state, action: PayloadAction<string | undefined>) => {
       state.lambnoteId = action.payload
     },
+    setNewSection: (state, action: PayloadAction<OnenoteSection>) => {
+      state.sections.push(action.payload)
+    },
     setNotebookData: (state, action: PayloadAction<Notebook[]>) => {
-      state.notebooks = action.payload
+      state.sections = action.payload
     },
     setPageData: (state, action: PayloadAction<OnenotePage[]>) => {
       state.pages = action.payload
@@ -78,6 +81,7 @@ export const noteSlice = createSlice({
 
 export const {
   setLambNoteId,
+  setNewSection,
   setNotebookData,
   setPageData,
   setPageTitle
@@ -96,6 +100,16 @@ export const fetchLambNotebookData = (): AppThunk => async (dispatch) => {
     dispatch(setLambNoteId(notebook.id))
   } catch (e) {
     dispatch(setLambNoteId(undefined))
+  }
+}
+
+export const createNewSection = (lambnoteId: string, sectionName: string): AppThunk => async (dispatch) => {
+  try {
+    const section = await graphService.createNewSection(lambnoteId, sectionName)
+    console.log(section)
+    dispatch(setNewSection(section))
+  } catch (e) {
+    console.log('Error: Create new section: ' + e)
   }
 }
 
@@ -133,20 +147,10 @@ export const updatePageTitle = (
   }
 }
 
-export const selectNoteList = (state: RootState) => {
-  const noteList: IDropdownOption[] = []
-  state.note.notebooks.forEach((note) => {
-    noteList.push({ key: note.id ?? '', text: note.displayName ?? '' })
-  })
-  return noteList
+export const selectLambnoteId = (state: RootState) => {
+  return state.note.lambnoteId ?? ''
 }
-
-export const selectSectionList = (state: RootState) => {
-  const currentNote = state.note.notebooks.find(
-    (note) => note.id === state.note.lambnoteId
-  )
-  return currentNote?.sections ?? []
-}
+export const selectSectionList = (state: RootState) => state.note.sections
 
 export const selectPageList = (state: RootState) => state.note.pages
 

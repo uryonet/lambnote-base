@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@fluentui/react": "^7.149.3",
+    "@fluentui/react-hooks": "^8.0.0-beta.0",
     "@microsoft/microsoft-graph-client": "^2.1.1",
     "@reduxjs/toolkit": "^1.2.5",
     "@testing-library/jest-dom": "^5.11.5",
@@ -29,6 +30,8 @@
   },
   "devDependencies": {
     "@microsoft/microsoft-graph-types": "^1.26.0",
+    "@types/jest": "^26.0.15",
+    "@types/node": "^12.19.3",
     "@types/prosemirror-commands": "^1.0.3",
     "@types/prosemirror-history": "^1.0.1",
     "@types/prosemirror-keymap": "^1.0.3",
@@ -39,8 +42,6 @@
     "@types/prosemirror-tables": "^0.9.1",
     "@types/prosemirror-transform": "^1.1.1",
     "@types/prosemirror-view": "^1.16.1",
-    "@types/jest": "^26.0.15",
-    "@types/node": "^12.19.3",
     "@types/react": "^16.9.55",
     "@types/react-dom": "^16.9.9",
     "@types/react-redux": "^7.1.7",
