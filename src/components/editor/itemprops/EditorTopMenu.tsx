@@ -12,8 +12,8 @@ import {
   IDialogContentProps,
   IModalProps
 } from '@fluentui/react'
-import { useDispatch, useSelector } from "react-redux";
-import { createNewSection, selectLambnoteId } from "../../../store/NoteSlice";
+import { useDispatch, useSelector } from 'react-redux'
+import { createNewSection, selectLambnoteId } from '../../../store/NoteSlice'
 
 export const EditorTopMenu: React.FC = () => {
   const dispatch = useDispatch()

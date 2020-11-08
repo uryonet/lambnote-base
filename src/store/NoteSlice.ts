@@ -1,10 +1,15 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AppThunk, RootState } from './store'
 import graphService from '../lib/graph/GraphService'
-import { Notebook, OnenotePage, OnenoteSection } from "@microsoft/microsoft-graph-types";
+import {
+  Notebook,
+  OnenotePage,
+  OnenoteSection
+} from '@microsoft/microsoft-graph-types'
 
 interface NoteState {
   lambnoteId: string | undefined
+  currentSectionId: string | undefined
   sections: OnenoteSection[]
   pages: OnenotePage[]
   page: PageInfo
@@ -18,6 +23,7 @@ interface PageInfo {
 
 const initialState: NoteState = {
   lambnoteId: undefined,
+  currentSectionId: undefined,
   sections: [],
   pages: [],
   page: {
@@ -28,7 +34,6 @@ const initialState: NoteState = {
 }
 
 export interface UpdateContent {
-
   target: string
   action: string
   content: string
@@ -56,11 +61,14 @@ export const noteSlice = createSlice({
     setLambNoteId: (state, action: PayloadAction<string | undefined>) => {
       state.lambnoteId = action.payload
     },
+    setCurrentSectionId: (state, action: PayloadAction<string | undefined>) => {
+      state.currentSectionId = action.payload
+    },
+    setSectionsList: (state, action: PayloadAction<OnenoteSection[]>) => {
+      state.sections = action.payload
+    },
     setNewSection: (state, action: PayloadAction<OnenoteSection>) => {
       state.sections.push(action.payload)
-    },
-    setNotebookData: (state, action: PayloadAction<Notebook[]>) => {
-      state.sections = action.payload
     },
     setPageData: (state, action: PayloadAction<OnenotePage[]>) => {
       state.pages = action.payload
@@ -81,8 +89,9 @@ export const noteSlice = createSlice({
 
 export const {
   setLambNoteId,
+  setCurrentSectionId,
+  setSectionsList,
   setNewSection,
-  setNotebookData,
   setPageData,
   setPageTitle
 } = noteSlice.actions
@@ -90,12 +99,16 @@ export const {
 export const fetchLambNotebookData = (): AppThunk => async (dispatch) => {
   try {
     const notebooks = await graphService.getLambNotebook()
+    console.log('Notebooks: ')
     console.log(notebooks)
     let notebook: Notebook
     if (notebooks.length == 0) {
       notebook = await graphService.createLambNotebook()
     } else {
       notebook = notebooks[0]
+      if (notebook.id) {
+        dispatch(fetchSectionsData(notebook.id))
+      }
     }
     dispatch(setLambNoteId(notebook.id))
   } catch (e) {
@@ -103,7 +116,24 @@ export const fetchLambNotebookData = (): AppThunk => async (dispatch) => {
   }
 }
 
-export const createNewSection = (lambnoteId: string, sectionName: string): AppThunk => async (dispatch) => {
+export const fetchSectionsData = (lambnoteId: string): AppThunk => async (
+  dispatch
+) => {
+  try {
+    const sections = await graphService.getSectionsList(lambnoteId)
+    console.log('Sections: ')
+    console.log(sections)
+    dispatch(setSectionsList(sections))
+  } catch (e) {
+    const emptySections: OnenoteSection[] = []
+    dispatch(setSectionsList(emptySections))
+  }
+}
+
+export const createNewSection = (
+  lambnoteId: string,
+  sectionName: string
+): AppThunk => async (dispatch) => {
   try {
     const section = await graphService.createNewSection(lambnoteId, sectionName)
     console.log(section)

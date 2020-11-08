@@ -47,6 +47,16 @@ class GraphService {
       .post(json)
   }
 
+  // セクション一覧を取得する
+  async getSectionsList(lambnoteId: string): Promise<OnenoteSection[]> {
+    const client = await this.getAuthClient()
+    const response = await client
+      .api('/me/onenote/notebooks/' + lambnoteId + '/sections')
+      .select('id,displayName,createdDateTime')
+      .get()
+    return response.value
+  }
+
   // セクションを新規作成する
   async createNewSection(lambnoteId: string, sectionName: string): Promise<OnenoteSection> {
     const client = await this.getAuthClient()

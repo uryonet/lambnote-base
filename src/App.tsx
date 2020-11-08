@@ -8,7 +8,7 @@ import { LoginForm } from './components/LoginForm'
 import * as authService from './lib/graph/AuthService'
 import { useDispatch } from 'react-redux'
 import { fetchUserData } from './store/UserSlice'
-import { fetchLambNotebookData } from "./store/NoteSlice";
+import { fetchLambNotebookData } from './store/NoteSlice'
 
 const App: React.FC = () => {
   const dispatch = useDispatch()
