@@ -6,7 +6,7 @@ import {
 } from '@fluentui/react'
 import * as authService from '../../lib/graph/AuthService'
 import { useSelector } from 'react-redux'
-import { selectUser } from '../../store/UserSlice'
+import { selectUser } from '../../features/users/userSlice'
 
 export const LambHeader: React.FC = () => {
   const user = useSelector(selectUser)

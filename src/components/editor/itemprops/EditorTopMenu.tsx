@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useBoolean } from '@fluentui/react-hooks'
 import {
   CommandBar,
@@ -13,7 +13,7 @@ import {
   IModalProps
 } from '@fluentui/react'
 import { useDispatch, useSelector } from 'react-redux'
-import { createNewSection, selectLambnoteId } from '../../../store/NoteSlice'
+import { createNewSection, selectLambnoteId } from '../../../features/notes/noteSlice'
 
 export const EditorTopMenu: React.FC = () => {
   const dispatch = useDispatch()

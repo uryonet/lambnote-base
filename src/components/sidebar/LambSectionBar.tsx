@@ -2,7 +2,7 @@ import React from 'react'
 import { Nav, INavLinkGroup, INavLink } from '@fluentui/react'
 import { sidebarStyles } from './SidebarStyle'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchPageData, selectSectionList } from '../../store/NoteSlice'
+import { fetchPageData, selectSectionList } from '../../features/notes/noteSlice'
 
 export const LambSectionBar: React.FC = () => {
   const dispatch = useDispatch()

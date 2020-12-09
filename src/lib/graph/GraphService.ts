@@ -2,7 +2,7 @@ import * as graph from '@microsoft/microsoft-graph-client'
 import * as authService from './AuthService'
 import { AuthProviderCallback, Client } from '@microsoft/microsoft-graph-client'
 import { Notebook, OnenotePage, OnenoteSection, User } from "@microsoft/microsoft-graph-types";
-import { UpdateContent } from '../../store/NoteSlice'
+import { UpdateContent } from '../../features/notes/noteSlice'
 
 class GraphService {
   private async getAuthClient(): Promise<Client> {

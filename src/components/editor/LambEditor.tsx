@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { AppDispatch } from '../../store/store'
+import { AppDispatch } from '../../app/store'
 import graphService from '../../lib/graph/GraphService'
 import { EditorTopMenu } from './itemprops/EditorTopMenu'
 import { EditorState } from 'prosemirror-state'
@@ -13,7 +13,7 @@ import {
   selectPageContent,
   UpdateContent,
   updatePageTitle
-} from '../../store/NoteSlice'
+} from '../../features/notes/noteSlice'
 import { PrimaryButton, TextField, ITextFieldStyles } from '@fluentui/react'
 
 export const LambEditor: React.FC = () => {

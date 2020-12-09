@@ -1,18 +1,19 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { AppThunk, RootState } from './store'
-import graphService from '../lib/graph/GraphService'
+import { AppThunk } from 'app/store'
+import { RootState } from 'app/rootReducer'
+import graphService from 'lib/graph/GraphService'
 
 interface UserState {
   user:
     | {
-        isLoad: false
-      }
+    isLoad: false
+  }
     | {
-        isLoad: true
-        displayName: string
-        email: string
-        avatar: string
-      }
+    isLoad: true
+    displayName: string
+    email: string
+    avatar: string
+  }
 }
 
 const initialState: UserState = {

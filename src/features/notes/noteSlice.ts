@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { AppThunk, RootState } from './store'
-import graphService from '../lib/graph/GraphService'
+import { AppThunk } from 'app/store'
+import { RootState } from 'app/rootReducer'
+import graphService from 'lib/graph/GraphService'
 import {
   Notebook,
   OnenotePage,
