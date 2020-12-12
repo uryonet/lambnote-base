@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { LambHeader } from 'components/header/LambHeader'
 import { SectionsList } from 'features/sections/SectionsList'
-import { LambPageBar } from 'components/sidebar/LambPageBar'
+import { PagesList } from 'features/pages/PagesList'
 import { LambEditor } from 'components/editor/LambEditor'
 import { LoginForm } from 'components/LoginForm'
 
@@ -26,7 +26,7 @@ const App: React.FC = () => {
         <LambHeader />
         <div className="content">
           <SectionsList />
-          <LambPageBar />
+          <PagesList />
           <LambEditor />
         </div>
       </div>

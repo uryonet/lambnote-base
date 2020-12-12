@@ -66,6 +66,7 @@ class GraphService {
       .post(json)
   }
 
+  // ページ一覧を取得する
   async getPages(sectionId: string): Promise<OnenotePage[]> {
     const client = await this.getAuthClient()
     const response = await client
@@ -76,7 +77,8 @@ class GraphService {
     return response.value
   }
 
-  async getPageContent(pageId: string): Promise<string> {
+  // ページを取得する
+  async getPage(pageId: string): Promise<string> {
     const client = await this.getAuthClient()
     const response: ReadableStream = await client
       .api('/me/onenote/pages/' + pageId + '/content')

@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { AppDispatch } from '../../app/store'
-import graphService from '../../lib/graph/GraphService'
+import { selectPages, updatePageTitle } from 'features/pages/pagesSlice'
+
+import graphService from 'lib/graph/GraphService'
 import { EditorTopMenu } from './itemprops/EditorTopMenu'
 import { EditorState } from 'prosemirror-state'
 import { EditorView } from 'prosemirror-view'
@@ -9,18 +10,12 @@ import { DOMParser } from 'prosemirror-model'
 import { schema } from 'prosemirror-schema-basic'
 import { mySchema } from '../../lib/prosemirror/MySchema'
 import { pmPlugins } from '../../lib/prosemirror/PmPlugins'
-import {
-  selectPageContent,
-  UpdateContent,
-  updatePageTitle
-} from '../../features/notes/noteSlice'
 import { PrimaryButton, TextField, ITextFieldStyles } from '@fluentui/react'
 
 export const LambEditor: React.FC = () => {
-  const dispatch: AppDispatch = useDispatch()
-
-  const { pageRaw, pageId, title } = useSelector(selectPageContent)
+  const dispatch = useDispatch()
   const [pageTitle, setPageTitle] = useState('')
+  const { currentPageId, currentPageTitle, currentPageRaw } = useSelector(selectPages)
 
   const pmEditor = useRef<HTMLDivElement>(null)
   const eView = useRef<EditorView | null>(null)
@@ -51,7 +46,7 @@ export const LambEditor: React.FC = () => {
 
   //NoteContentStateが更新された場合のみ動作する
   useEffect(() => {
-    console.log(pageRaw)
+    console.log(currentPageRaw)
     if (renderFlgRef.current) {
       console.log('editorStateの更新')
       // const doc = DOMParser.fromSchema(mySchema()).parse(body)
@@ -60,14 +55,14 @@ export const LambEditor: React.FC = () => {
       //   plugins: pmPlugins()
       // })
       // eView.current?.updateState(editorState)
-      setPageTitle(title)
+      setPageTitle(currentPageTitle)
     } else {
       renderFlgRef.current = true
     }
-  }, [pageRaw])
+  }, [currentPageRaw])
 
   const patchPageTitle = () => {
-    dispatch(updatePageTitle(pageId, pageTitle))
+    dispatch(updatePageTitle(currentPageId, pageTitle))
   }
 
   const handleChange = (e: any, value: string | undefined) => {

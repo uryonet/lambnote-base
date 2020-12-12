@@ -21,7 +21,7 @@ const initialState: SectionsState = {
   sections: []
 }
 
-const startLoading = (state: SectionsState) => {
+const loadingStarted = (state: SectionsState) => {
   state.isLoading = true
 }
 
@@ -36,46 +36,55 @@ export const sectionsSlice = createSlice({
   name: 'sections',
   initialState,
   reducers: {
-    startGetSections: startLoading,
-    failureGetSections: loadingFailed,
+    startLoading: loadingStarted,
+    failureLoading: loadingFailed,
     setCurrentSectionId: (state, action: PayloadAction<string | undefined>) => {
+      state.error = null
       state.currentSectionId = action.payload
     },
-    setSectionsList: (state, action: PayloadAction<OnenoteSection[]>) => {
+    setSectionsData: (state, action: PayloadAction<OnenoteSection[]>) => {
+      state.isLoading = false
+      state.error = null
       state.sections = action.payload
     },
     setNewSection: (state, action: PayloadAction<OnenoteSection>) => {
+      state.isLoading = false
+      state.error = null
       state.sections.push(action.payload)
     }
   }
 })
 
-export const { startGetSections, failureGetSections, setCurrentSectionId, setSectionsList, setNewSection } = sectionsSlice.actions
+export const { startLoading, failureLoading, setCurrentSectionId, setSectionsData, setNewSection } = sectionsSlice.actions
 export default sectionsSlice.reducer
 
 export const selectSections = (state: RootState) => state.sections
 
 export const fetchSectionsData = (lambnoteId: string): AppThunk => async dispatch => {
   try {
-    dispatch(startGetSections())
+    dispatch(startLoading())
     const sections = await graphService.getSectionsList(lambnoteId)
     console.log('Sections: ')
     console.log(sections)
-    dispatch(setSectionsList(sections))
+    dispatch(setSectionsData(sections))
   } catch (e) {
-    dispatch(failureGetSections(e.toString()))
+    dispatch(failureLoading(e.toString()))
   }
 }
 
 export const createNewSection = (
-  lambnoteId: string,
+  lambnoteId: string | undefined,
   sectionName: string
-): AppThunk => async (dispatch) => {
+): AppThunk => async dispatch => {
   try {
+    dispatch(startLoading())
+    if (lambnoteId === undefined) {
+      throw new Error('lambnoteId is undefined')
+    }
     const section = await graphService.createNewSection(lambnoteId, sectionName)
     console.log(section)
     dispatch(setNewSection(section))
   } catch (e) {
-    console.log('Error: Create new section: ' + e)
+    dispatch(failureLoading(e.toString()))
   }
 }

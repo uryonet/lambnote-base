@@ -22,7 +22,7 @@ const initialState: UserState = {
   avatar: ''
 }
 
-const startLoading = (state: UserState) => {
+const loadingStarted = (state: UserState) => {
   state.isLoading = true
 }
 
@@ -38,8 +38,8 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    startGetUser: startLoading,
-    failureGetUser: loadingFailed,
+    startLoading: loadingStarted,
+    failureLoading: loadingFailed,
     setUserData: (state, action: PayloadAction<UserInfo>) => {
       const { displayName, email, avatar } = action.payload
       state.isLoading = false
@@ -51,14 +51,14 @@ export const userSlice = createSlice({
   }
 })
 
-export const { startGetUser, failureGetUser, setUserData } = userSlice.actions
+export const { startLoading, failureLoading, setUserData } = userSlice.actions
 export default userSlice.reducer
 
 export const selectUser = (state: RootState) => state.user
 
 export const fetchUserData = (): AppThunk => async dispatch => {
   try {
-    dispatch(startGetUser())
+    dispatch(startLoading())
     const user = await graphService.getUserInfo()
     const avatar = await graphService.getUserAvatar()
     const payload: UserInfo = {
@@ -68,6 +68,6 @@ export const fetchUserData = (): AppThunk => async dispatch => {
     }
     dispatch(setUserData(payload))
   } catch (e) {
-    dispatch(failureGetUser(e.toString()))
+    dispatch(failureLoading(e.toString()))
   }
 }

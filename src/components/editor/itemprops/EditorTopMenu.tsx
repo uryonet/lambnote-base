@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
-import { useBoolean } from '@fluentui/react-hooks'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectNote } from 'features/notes/noteSlice'
+import { createNewSection } from 'features/sections/sectionsSlice'
+
 import {
   CommandBar,
   PrimaryButton,
@@ -12,13 +15,12 @@ import {
   IDialogContentProps,
   IModalProps
 } from '@fluentui/react'
-import { useDispatch, useSelector } from 'react-redux'
-import { createNewSection, selectLambnoteId } from '../../../features/notes/noteSlice'
+import { useBoolean } from '@fluentui/react-hooks'
 
 export const EditorTopMenu: React.FC = () => {
   const dispatch = useDispatch()
   const [sectionName, setSectionName] = useState('')
-  const lambnoteId = useSelector(selectLambnoteId)
+  const { lambnoteId } = useSelector(selectNote)
 
   const [
     hideNewSectionDialog,

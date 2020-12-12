@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchSectionsData, selectSections } from 'features/sections/sectionsSlice'
 import { selectNote } from 'features/notes/noteSlice'
+import { fetchSectionsData, selectSections } from 'features/sections/sectionsSlice'
+import { fetchPagesData } from 'features/pages/pagesSlice'
 
 import { Nav, INavLinkGroup, INavLink } from '@fluentui/react'
-import { sidebarStyles } from '../../components/sidebar/SidebarStyle'
+import { sidebarStyles } from 'components/sidebar/SidebarStyle'
 
 export const SectionsList: React.FC = () => {
   const dispatch = useDispatch()
@@ -22,8 +23,8 @@ export const SectionsList: React.FC = () => {
     sections.forEach(section => {
       navList.push({
         name: section.displayName ?? '',
-        url: ''
-        // onClick: () => dispatch(fetchPageData(section.id ?? ''))
+        url: '',
+        onClick: () => dispatch(fetchPagesData(section.id ?? ''))
       })
     })
     return [{ links: navList }]

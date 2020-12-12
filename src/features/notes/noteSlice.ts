@@ -36,6 +36,8 @@ export const noteSlice = createSlice({
     startGetNote: startLoading,
     failureGetNote: loadingFailed,
     setLambNoteId: (state, action: PayloadAction<string | undefined>) => {
+      state.isLoading = false
+      state.error = null
       state.lambnoteId = action.payload
     }
   }
