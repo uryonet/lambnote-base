@@ -29,6 +29,9 @@ const startLoading = (state: UserState) => {
 const loadingFailed = (state: UserState, action: PayloadAction<string>) => {
   state.isLoading = false
   state.error = action.payload
+  state.displayName = ''
+  state.email = ''
+  state.avatar = ''
 }
 
 export const userSlice = createSlice({

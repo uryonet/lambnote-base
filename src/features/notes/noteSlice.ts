@@ -1,104 +1,54 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AppThunk } from 'app/store'
 import { RootState } from 'app/rootReducer'
 import graphService from 'lib/graph/GraphService'
-import {
-  Notebook,
-  OnenotePage,
-  OnenoteSection
-} from '@microsoft/microsoft-graph-types'
+import { Notebook } from '@microsoft/microsoft-graph-types'
 
-interface NoteState {
+interface NoteInfo {
   lambnoteId: string | undefined
-  currentSectionId: string | undefined
-  sections: OnenoteSection[]
-  pages: OnenotePage[]
-  page: PageInfo
 }
 
-interface PageInfo {
-  pageRaw: string
-  pageId: string
-  title: string
-}
+type NoteState = {
+  isLoading: boolean
+  error: string | null
+} & NoteInfo
 
 const initialState: NoteState = {
-  lambnoteId: undefined,
-  currentSectionId: undefined,
-  sections: [],
-  pages: [],
-  page: {
-    pageRaw: '',
-    pageId: '',
-    title: ''
-  }
+  isLoading: false,
+  error: null,
+  lambnoteId: undefined
 }
 
-export interface UpdateContent {
-  target: string
-  action: string
-  content: string
+const startLoading = (state: NoteState) => {
+  state.isLoading = true
 }
 
-export const fetchPageContent = createAsyncThunk(
-  'page/content',
-  async (arg: { pageId: string }) => {
-    const { pageId } = arg
-    const pageRaw = await graphService.getPageContent(pageId)
-    const { title } = new DOMParser().parseFromString(pageRaw, 'text/html')
-    const page: PageInfo = {
-      pageRaw,
-      pageId,
-      title
-    }
-    return page
-  }
-)
+const loadingFailed = (state: NoteState, action: PayloadAction<string>) => {
+  state.isLoading = false
+  state.error = action.payload
+  state.lambnoteId = undefined
+}
 
 export const noteSlice = createSlice({
   name: 'note',
   initialState,
   reducers: {
+    startGetNote: startLoading,
+    failureGetNote: loadingFailed,
     setLambNoteId: (state, action: PayloadAction<string | undefined>) => {
       state.lambnoteId = action.payload
-    },
-    setCurrentSectionId: (state, action: PayloadAction<string | undefined>) => {
-      state.currentSectionId = action.payload
-    },
-    setSectionsList: (state, action: PayloadAction<OnenoteSection[]>) => {
-      state.sections = action.payload
-    },
-    setNewSection: (state, action: PayloadAction<OnenoteSection>) => {
-      state.sections.push(action.payload)
-    },
-    setPageData: (state, action: PayloadAction<OnenotePage[]>) => {
-      state.pages = action.payload
-    },
-    setPageTitle: (state, action: PayloadAction<string>) => {
-      state.page.title = action.payload
     }
-  },
-  extraReducers: (builder) => {
-    builder.addCase(fetchPageContent.fulfilled, (state, action) => {
-      return {
-        ...state,
-        page: action.payload
-      }
-    })
   }
 })
 
-export const {
-  setLambNoteId,
-  setCurrentSectionId,
-  setSectionsList,
-  setNewSection,
-  setPageData,
-  setPageTitle
-} = noteSlice.actions
+export const { startGetNote, failureGetNote, setLambNoteId } = noteSlice.actions
+export default noteSlice.reducer
 
-export const fetchLambNotebookData = (): AppThunk => async (dispatch) => {
+export const selectNote = (state: RootState) => state.note
+
+export const fetchLambNotebookData = (): AppThunk => async dispatch => {
   try {
+    dispatch(startGetNote())
     const notebooks = await graphService.getLambNotebook()
     console.log('Notebooks: ')
     console.log(notebooks)
@@ -107,84 +57,9 @@ export const fetchLambNotebookData = (): AppThunk => async (dispatch) => {
       notebook = await graphService.createLambNotebook()
     } else {
       notebook = notebooks[0]
-      if (notebook.id) {
-        dispatch(fetchSectionsData(notebook.id))
-      }
     }
     dispatch(setLambNoteId(notebook.id))
   } catch (e) {
-    dispatch(setLambNoteId(undefined))
+    dispatch(failureGetNote(e.toString()))
   }
 }
-
-export const fetchSectionsData = (lambnoteId: string): AppThunk => async (
-  dispatch
-) => {
-  try {
-    const sections = await graphService.getSectionsList(lambnoteId)
-    console.log('Sections: ')
-    console.log(sections)
-    dispatch(setSectionsList(sections))
-  } catch (e) {
-    const emptySections: OnenoteSection[] = []
-    dispatch(setSectionsList(emptySections))
-  }
-}
-
-export const createNewSection = (
-  lambnoteId: string,
-  sectionName: string
-): AppThunk => async (dispatch) => {
-  try {
-    const section = await graphService.createNewSection(lambnoteId, sectionName)
-    console.log(section)
-    dispatch(setNewSection(section))
-  } catch (e) {
-    console.log('Error: Create new section: ' + e)
-  }
-}
-
-export const fetchPageData = (sectionId: string): AppThunk => async (
-  dispatch
-) => {
-  try {
-    const pages = await graphService.getPages(sectionId)
-    console.log(pages)
-    dispatch(setPageData(pages))
-  } catch (e) {
-    const emptyPages: OnenotePage[] = []
-    dispatch(setPageData(emptyPages))
-  }
-}
-
-export const updatePageTitle = (
-  pageId: string,
-  title: string
-): AppThunk => async (dispatch) => {
-  try {
-    const stream: UpdateContent[] = [
-      {
-        target: 'title',
-        action: 'replace',
-        content: title
-      }
-    ]
-    const result = await graphService.updatePageTitle(pageId, stream)
-    if (result) {
-      dispatch(setPageTitle(title))
-    }
-  } catch (e) {
-    console.log(e)
-  }
-}
-
-export const selectLambnoteId = (state: RootState) => {
-  return state.note.lambnoteId ?? ''
-}
-export const selectSectionList = (state: RootState) => state.note.sections
-
-export const selectPageList = (state: RootState) => state.note.pages
-
-export const selectPageContent = (state: RootState): PageInfo => state.note.page
-
-export default noteSlice.reducer

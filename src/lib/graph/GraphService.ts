@@ -1,8 +1,8 @@
 import * as graph from '@microsoft/microsoft-graph-client'
 import * as authService from './AuthService'
 import { AuthProviderCallback, Client } from '@microsoft/microsoft-graph-client'
-import { Notebook, OnenotePage, OnenoteSection, User } from "@microsoft/microsoft-graph-types";
-import { UpdateContent } from '../../features/notes/noteSlice'
+import { Notebook, OnenotePage, OnenoteSection, User } from '@microsoft/microsoft-graph-types'
+import { UpdateContent } from 'features/pages/pagesSlice'
 
 class GraphService {
   private async getAuthClient(): Promise<Client> {
@@ -41,7 +41,7 @@ class GraphService {
   // LambNoteノートブックを新規作成する
   async createLambNotebook(): Promise<Notebook> {
     const client = await this.getAuthClient()
-    const json = {"displayName":"LambNote"}
+    const json = { 'displayName': 'LambNote' }
     return await client
       .api('/me/onenote/notebooks')
       .post(json)
@@ -60,7 +60,7 @@ class GraphService {
   // セクションを新規作成する
   async createNewSection(lambnoteId: string, sectionName: string): Promise<OnenoteSection> {
     const client = await this.getAuthClient()
-    const json = {"displayName":sectionName}
+    const json = { 'displayName': sectionName }
     return await client
       .api('/me/onenote/notebooks/' + lambnoteId + '/sections')
       .post(json)
