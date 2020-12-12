@@ -7,9 +7,11 @@ interface UserState {
   user:
     | {
     isLoad: false
+    isLoading: boolean
   }
     | {
     isLoad: true
+    isLoading: boolean
     displayName: string
     email: string
     avatar: string
@@ -18,29 +20,41 @@ interface UserState {
 
 const initialState: UserState = {
   user: {
-    isLoad: false
+    isLoad: false,
+    isLoading: false
   }
+}
+
+const startLoading = (state: UserState) => {
+  state.user.isLoading = true
 }
 
 export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    startGetUser: startLoading,
     setUserData: (state, action: PayloadAction<UserState>) => {
       state.user = action.payload.user
     }
   }
 })
 
-export const { setUserData } = userSlice.actions
+export const { startGetUser, setUserData } = userSlice.actions
 
-export const fetchUserData = (): AppThunk => async (dispatch) => {
+export const selectUser = (state: RootState) => state.user.user
+
+export default userSlice.reducer
+
+export const fetchUserData = (): AppThunk => async dispatch => {
   try {
+    dispatch(startGetUser())
     const user = await graphService.getUserInfo()
     const avatar = await graphService.getUserAvatar()
     const payload: UserState = {
       user: {
         isLoad: true,
+        isLoading: false,
         displayName: user.displayName || '',
         email: user.userPrincipalName || '',
         avatar: avatar
@@ -50,13 +64,10 @@ export const fetchUserData = (): AppThunk => async (dispatch) => {
   } catch (e) {
     const payload: UserState = {
       user: {
-        isLoad: false
+        isLoad: false,
+        isLoading: false
       }
     }
     dispatch(setUserData(payload))
   }
 }
-
-export const selectUser = (state: RootState) => state.user.user
-
-export default userSlice.reducer
