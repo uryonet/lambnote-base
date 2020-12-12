@@ -15,11 +15,11 @@ export const LambHeader: React.FC = () => {
     items: [
       {
         key: 'userName',
-        text: user.isLoad ? user.displayName : ''
+        text: user.displayName
       },
       {
         key: 'email',
-        text: user.isLoad ? user.email : ''
+        text: user.email
       },
       {
         key: 'signOut',

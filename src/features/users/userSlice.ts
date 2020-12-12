@@ -3,30 +3,32 @@ import { AppThunk } from 'app/store'
 import { RootState } from 'app/rootReducer'
 import graphService from 'lib/graph/GraphService'
 
-interface UserState {
-  user:
-    | {
-    isLoad: false
-    isLoading: boolean
-  }
-    | {
-    isLoad: true
-    isLoading: boolean
-    displayName: string
-    email: string
-    avatar: string
-  }
+interface UserInfo {
+  displayName: string
+  email: string
+  avatar: string
 }
 
+type UserState = {
+  isLoading: boolean
+  error: string | null
+} & UserInfo
+
 const initialState: UserState = {
-  user: {
-    isLoad: false,
-    isLoading: false
-  }
+  isLoading: false,
+  error: null,
+  displayName: '',
+  email: '',
+  avatar: ''
 }
 
 const startLoading = (state: UserState) => {
-  state.user.isLoading = true
+  state.isLoading = true
+}
+
+const loadingFailed = (state: UserState, action: PayloadAction<string>) => {
+  state.isLoading = false
+  state.error = action.payload
 }
 
 export const userSlice = createSlice({
@@ -34,40 +36,35 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     startGetUser: startLoading,
-    setUserData: (state, action: PayloadAction<UserState>) => {
-      state.user = action.payload.user
+    failureGetUser: loadingFailed,
+    setUserData: (state, action: PayloadAction<UserInfo>) => {
+      const { displayName, email, avatar } = action.payload
+      state.isLoading = false
+      state.error = null
+      state.displayName = displayName
+      state.email = email
+      state.avatar = avatar
     }
   }
 })
 
-export const { startGetUser, setUserData } = userSlice.actions
-
-export const selectUser = (state: RootState) => state.user.user
-
+export const { startGetUser, failureGetUser, setUserData } = userSlice.actions
 export default userSlice.reducer
+
+export const selectUser = (state: RootState) => state.user
 
 export const fetchUserData = (): AppThunk => async dispatch => {
   try {
     dispatch(startGetUser())
     const user = await graphService.getUserInfo()
     const avatar = await graphService.getUserAvatar()
-    const payload: UserState = {
-      user: {
-        isLoad: true,
-        isLoading: false,
-        displayName: user.displayName || '',
-        email: user.userPrincipalName || '',
-        avatar: avatar
-      }
+    const payload: UserInfo = {
+      displayName: user.displayName || '',
+      email: user.userPrincipalName || '',
+      avatar: avatar
     }
     dispatch(setUserData(payload))
   } catch (e) {
-    const payload: UserState = {
-      user: {
-        isLoad: false,
-        isLoading: false
-      }
-    }
-    dispatch(setUserData(payload))
+    dispatch(failureGetUser(e.toString()))
   }
 }
