@@ -72,6 +72,7 @@ export const LambEditor: React.FC = () => {
   return (
     <div className="lamb-editor">
       <EditorTopMenu />
+      <PrimaryButton text="保存" onClick={patchPageTitle} />
       <TextField
         className="title-editor"
         underlined
