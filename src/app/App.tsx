@@ -3,7 +3,7 @@ import { LambHeader } from 'components/header/LambHeader'
 import { SectionsList } from 'features/sections/SectionsList'
 import { PagesList } from 'features/pages/PagesList'
 import { LambEditor } from 'components/editor/LambEditor'
-import { LoginForm } from 'components/LoginForm'
+import { LoginForm } from 'features/users/LoginForm'
 
 import * as authService from 'lib/graph/AuthService'
 import { useDispatch } from 'react-redux'
