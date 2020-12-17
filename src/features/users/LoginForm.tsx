@@ -8,7 +8,8 @@ export const LoginForm: React.FC = () => {
 
   return (
     <div>
-      <p>ZeroNoteのご利用にはMicrosoftアカウントでのサインインが必要です。</p>
+      <h1>LambNote</h1>
+      <p>Lambnoteのご利用にはMicrosoftアカウントでのサインインが必要です。</p>
       <button onClick={handleSignIn}>サインイン</button>
     </div>
   )

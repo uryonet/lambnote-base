@@ -11,7 +11,6 @@ body {
 }
 
 .container {
-  height: 100vh;
 }
 
 .user-info li {
@@ -21,11 +20,11 @@ body {
 
 .content {
   display: flex;
-  height: calc(100% - 40px);
 }
 
-.lamb-sectionbar {
+.section-list {
   border-right: 1px solid #ddd;
+  width: 200px;
 }
 
 .lamb-pagebar {

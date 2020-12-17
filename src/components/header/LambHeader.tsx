@@ -19,7 +19,7 @@ export const LambHeader: React.FC = () => {
           <li>{displayName}</li>
           <li>{email}</li>
           <li>
-            <a href="" onClick={handleSignOut}>
+            <a href="#" onClick={handleSignOut}>
               サインアウト
             </a>
           </li>
