@@ -1,5 +1,4 @@
 import React from 'react'
-import { PrimaryButton } from '@fluentui/react'
 import * as authService from '../lib/graph/AuthService'
 
 export const LoginForm: React.FC = () => {
@@ -9,7 +8,6 @@ export const LoginForm: React.FC = () => {
         <h1>
           ZeroNoteのご利用にはMicrosoftアカウントでのサインインが必要です。
         </h1>
-        <PrimaryButton text="サインイン" onClick={authService.signIn} />
       </div>
     </div>
   )

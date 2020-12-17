@@ -3,11 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@fluentui/react": "7.153.4",
-    "@fluentui/react-hooks": "^8.0.0-beta.0",
     "@microsoft/microsoft-graph-client": "2.2.1",
     "@reduxjs/toolkit": "1.5.0",
-    "@uifabric/icons": "7.5.17",
     "msal": "1.4.4",
     "node-sass": "^4.14.1",
     "prosemirror-commands": "^1.1.4",

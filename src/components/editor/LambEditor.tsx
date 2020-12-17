@@ -3,14 +3,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { selectPages, updatePageTitle } from 'features/pages/pagesSlice'
 
 import graphService from 'lib/graph/GraphService'
-import { EditorTopMenu } from './itemprops/EditorTopMenu'
 import { EditorState } from 'prosemirror-state'
 import { EditorView } from 'prosemirror-view'
 import { DOMParser } from 'prosemirror-model'
 import { schema } from 'prosemirror-schema-basic'
 import { mySchema } from '../../lib/prosemirror/MySchema'
 import { pmPlugins } from '../../lib/prosemirror/PmPlugins'
-import { PrimaryButton, TextField, ITextFieldStyles } from '@fluentui/react'
 
 export const LambEditor: React.FC = () => {
   const dispatch = useDispatch()
@@ -61,34 +59,9 @@ export const LambEditor: React.FC = () => {
     }
   }, [currentPageRaw])
 
-  const patchPageTitle = () => {
-    dispatch(updatePageTitle(currentPageId, pageTitle))
-  }
-
-  const handleChange = (e: any, value: string | undefined) => {
-    value ? setPageTitle(value) : setPageTitle('')
-  }
-
   return (
     <div className="lamb-editor">
-      <EditorTopMenu />
-      <PrimaryButton text="保存" onClick={patchPageTitle} />
-      <TextField
-        className="title-editor"
-        underlined
-        value={pageTitle}
-        onChange={handleChange}
-        styles={getTitleFormStyles()}
-      />
       <div className="editor" ref={pmEditor} />
     </div>
   )
-}
-
-//スタイル
-const getTitleFormStyles = (): Partial<ITextFieldStyles> => {
-  return {
-    fieldGroup: [{ height: 46 }],
-    field: [{ 'font-size': 32 }]
-  }
 }
