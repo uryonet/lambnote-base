@@ -22,7 +22,7 @@ export const SectionsList: React.FC = () => {
   }
 
   return (
-    <div className="section-list">
+    <div className="sections-list">
       <h2>セクション</h2>
       <ul>
         {sections.map(({ id, displayName }) => {
