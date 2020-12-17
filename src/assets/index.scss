@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500&display=swap');
 
 body {
-  margin: 0;
   font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Segoe UI',
     'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
     'Helvetica Neue', sans-serif;
+  font-weight: 500;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: #fafafa;
@@ -14,29 +14,9 @@ body {
   height: 100vh;
 }
 
-.lamb-header {
-  display: flex;
-  align-items: center;
-  align-content: center;
-  height: 40px;
-  padding: 0 32px;
-  background: #7719aa;
-  h1 {
-    font-size: 15px;
-    color: #fafafa;
-    margin: 0;
-  }
-  .note-select {
-    width: 150px;
-    margin-left: 32px;
-  }
-  .user-icon {
-    color: #fafafa;
-    margin-left: auto;
-    padding: 0 5px;
-    height: 100%;
-    border-radius: 0;
-  }
+.user-info li {
+  display: inline-block;
+  width: 150px;
 }
 
 .content {
