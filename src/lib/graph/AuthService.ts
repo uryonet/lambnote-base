@@ -24,7 +24,7 @@ const msalConfig: Configuration = {
 const msalClient = new UserAgentApplication(msalConfig)
 
 export const signIn = async () => {
-  await msalClient.loginPopup(signInOptions)
+  await msalClient.loginRedirect(signInOptions)
 }
 
 export const signOut = () => {

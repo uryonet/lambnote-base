@@ -1,58 +1,30 @@
 import React from 'react'
-import {
-  IconButton,
-  IContextualMenuProps,
-  IButtonStyles
-} from '@fluentui/react'
-import * as authService from '../../lib/graph/AuthService'
 import { useSelector } from 'react-redux'
-import { selectUser } from '../../features/users/userSlice'
+import { selectUser } from 'features/users/userSlice'
+import * as authService from 'lib/graph/AuthService'
 
 export const LambHeader: React.FC = () => {
-  const user = useSelector(selectUser)
+  const { displayName, email } = useSelector(selectUser)
 
-  const menuProps: IContextualMenuProps = {
-    items: [
-      {
-        key: 'userName',
-        text: user.displayName
-      },
-      {
-        key: 'email',
-        text: user.email
-      },
-      {
-        key: 'signOut',
-        text: 'サインアウト',
-        onClick: () => authService.signOut()
-      }
-    ],
-    alignTargetEdge: true,
-    directionalHintFixed: true
-  }
-
-  const iconBtnStyle: IButtonStyles = {
-    rootHovered: {
-      background: '#9953c0'
-    },
-    rootPressed: {
-      background: '#9953c0'
-    },
-    rootExpanded: {
-      background: '#9953c0'
-    }
+  const handleSignOut = () => {
+    authService.signOut()
   }
 
   return (
-    <header className="lamb-header">
+    <header>
       <h1>LambNote</h1>
-      <IconButton
-        className="user-icon"
-        allowDisabledFocus={true}
-        iconProps={{ iconName: 'Contact' }}
-        menuProps={menuProps}
-        styles={iconBtnStyle}
-      />
+      <div className="user-info">
+        <h2>ユーザー情報</h2>
+        <ul>
+          <li>{displayName}</li>
+          <li>{email}</li>
+          <li>
+            <a href="#" onClick={handleSignOut}>
+              サインアウト
+            </a>
+          </li>
+        </ul>
+      </div>
     </header>
   )
 }
