@@ -7,7 +7,7 @@ import { OnenotePage } from '@microsoft/microsoft-graph-types'
 interface PageInfo {
   currentPageId: string
   currentPageTitle: string
-  currentPageRaw: string
+  currentPageBody: string
 }
 
 interface PagesInfo {
@@ -17,7 +17,8 @@ interface PagesInfo {
 type PagesState = {
   isLoading: boolean
   error: string | null
-} & PagesInfo & PageInfo
+} & PagesInfo &
+  PageInfo
 
 const initialState: PagesState = {
   isLoading: false,
@@ -25,7 +26,7 @@ const initialState: PagesState = {
   pages: [],
   currentPageId: '',
   currentPageTitle: '',
-  currentPageRaw: ''
+  currentPageBody: ''
 }
 
 export interface UpdateContent {
@@ -44,7 +45,7 @@ const loadingFailed = (state: PagesState, action: PayloadAction<string>) => {
   state.pages = []
   state.currentPageId = ''
   state.currentPageTitle = ''
-  state.currentPageRaw = ''
+  state.currentPageBody = ''
 }
 
 export const pagesSlice = createSlice({
@@ -59,12 +60,16 @@ export const pagesSlice = createSlice({
       state.pages = action.payload
     },
     setPageData: (state, action: PayloadAction<PageInfo>) => {
-      const { currentPageId, currentPageTitle, currentPageRaw } = action.payload
+      const { currentPageId, currentPageTitle, currentPageBody } = action.payload
+      console.log('タイトル: ')
+      console.log(currentPageTitle)
+      console.log('ボディ: ')
+      console.log(currentPageBody)
       state.isLoading = false
       state.error = null
       state.currentPageId = currentPageId
       state.currentPageTitle = currentPageTitle
-      state.currentPageRaw = currentPageRaw
+      state.currentPageBody = currentPageBody
     },
     setPageTitle: (state, action: PayloadAction<string>) => {
       state.currentPageTitle = action.payload
@@ -77,7 +82,7 @@ export default pagesSlice.reducer
 
 export const selectPages = (state: RootState) => state.pages
 
-export const fetchPagesData = (sectionId: string): AppThunk => async dispatch => {
+export const fetchPagesData = (sectionId: string): AppThunk => async (dispatch) => {
   try {
     dispatch(startLoading())
     const pages = await graphService.getPages(sectionId)
@@ -89,16 +94,15 @@ export const fetchPagesData = (sectionId: string): AppThunk => async dispatch =>
   }
 }
 
-export const fetchPageData = (pageId: string): AppThunk => async dispatch => {
+export const fetchPageData = (pageId: string): AppThunk => async (dispatch) => {
   try {
     dispatch(startLoading())
     const page = await graphService.getPage(pageId)
-    const { title } = new DOMParser().parseFromString(page, 'text/html')
-    console.log(page)
+    const { title, body } = new DOMParser().parseFromString(page, 'text/html')
     const payload: PageInfo = {
       currentPageId: pageId,
       currentPageTitle: title,
-      currentPageRaw: page
+      currentPageBody: body.innerHTML
     }
     dispatch(setPageData(payload))
   } catch (e) {
@@ -106,10 +110,7 @@ export const fetchPageData = (pageId: string): AppThunk => async dispatch => {
   }
 }
 
-export const updatePageTitle = (
-  pageId: string,
-  title: string
-): AppThunk => async dispatch => {
+export const updatePageTitle = (pageId: string, title: string): AppThunk => async (dispatch) => {
   try {
     const stream: UpdateContent[] = [
       {

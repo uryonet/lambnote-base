@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { LambHeader } from 'components/header/LambHeader'
 import { SectionsList } from 'features/sections/SectionsList'
 import { PagesList } from 'features/pages/PagesList'
-import { LambEditor } from 'components/editor/LambEditor'
+import { Editor } from 'features/editor/Editor'
 import { LoginForm } from 'features/users/LoginForm'
 
 import * as authService from 'lib/graph/AuthService'
@@ -27,7 +27,7 @@ const App: React.FC = () => {
         <div className="content">
           <SectionsList />
           <PagesList />
-          <LambEditor />
+          <Editor />
         </div>
       </div>
     )

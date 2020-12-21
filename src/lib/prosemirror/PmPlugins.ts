@@ -4,17 +4,16 @@ import { keymap } from 'prosemirror-keymap'
 import { baseKeymap } from 'prosemirror-commands'
 
 export const pmPlugins = (): Plugin[] => {
-  let plugins = [
+  const addClassPlugin = new Plugin({
+    props: {
+      attributes: { class: 'zeronote-editor' }
+    }
+  })
+
+  return [
     history(),
     keymap({ 'Mod-z': undo, 'Mod-y': redo }),
     keymap(baseKeymap)
+    // addClassPlugin
   ]
-
-  return plugins.concat(
-    new Plugin({
-      props: {
-        attributes: { class: 'zeronote-editor' }
-      }
-    })
-  )
 }

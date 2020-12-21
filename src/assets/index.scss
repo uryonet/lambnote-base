@@ -14,6 +14,10 @@ body {
 .container {
 }
 
+header {
+  height: 150px;
+}
+
 .user-info li {
   display: inline-block;
   width: 150px;
@@ -21,6 +25,7 @@ body {
 
 .content {
   display: flex;
+  height: calc(100vh - 171.44px);
 }
 
 .sections-list {
@@ -33,26 +38,26 @@ body {
   width: 200px;
 }
 
-.lamb-editor {
-  width: 100%;
-  padding: 10px 40px;
+.main-editor {
+  flex: 1;
   overflow: auto;
-
-  .title-editor {
-    margin: 20px 0;
+  padding: 10px;
+  .title-input {
+    box-sizing: border-box;
+    width: 100%;
   }
 
-}
-
-.ProseMirror {
-  padding: 4px 8px;
-  line-height: 1.5;
-  outline: none;
 }
 
 .editor {
-  width: 100%;
+  border: 1px solid #ddd;
   .table-bordered {
     border: 1px solid #ccc;
   }
+}
+
+.ProseMirror {
+  outline: none;
+  height: 100%;
+  overflow: hidden;
 }
