@@ -1,6 +1,5 @@
 import { Schema } from 'prosemirror-model'
 import { tableNodes } from 'prosemirror-tables'
-import { schema } from 'prosemirror-schema-basic'
 import { addListNodes } from 'prosemirror-schema-list'
 
 // export const mySchema = (): Schema => {
