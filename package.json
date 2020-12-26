@@ -37,7 +37,8 @@
     "@types/react": "17.0.0",
     "@types/react-dom": "17.0.0",
     "@types/react-redux": "7.1.14",
-    "prettier": "2.2.1"
+    "prettier": "2.2.1",
+    "prosemirror-dev-tools": "^3.0.2"
   },
   "scripts": {
     "start": "react-scripts start",
