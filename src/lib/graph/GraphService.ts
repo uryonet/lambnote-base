@@ -33,7 +33,7 @@ class GraphService {
     const response = await client
       .api('/me/onenote/notebooks')
       .select('id,displayName')
-      .filter('displayName eq \'LambNote\'')
+      .filter("displayName eq 'LambNote'")
       .get()
     return response.value
   }
@@ -41,10 +41,8 @@ class GraphService {
   // LambNoteノートブックを新規作成する
   async createLambNotebook(): Promise<Notebook> {
     const client = await this.getAuthClient()
-    const json = { 'displayName': 'LambNote' }
-    return await client
-      .api('/me/onenote/notebooks')
-      .post(json)
+    const json = { displayName: 'LambNote' }
+    return await client.api('/me/onenote/notebooks').post(json)
   }
 
   // セクション一覧を取得する
@@ -60,10 +58,8 @@ class GraphService {
   // セクションを新規作成する
   async createNewSection(lambnoteId: string, sectionName: string): Promise<OnenoteSection> {
     const client = await this.getAuthClient()
-    const json = { 'displayName': sectionName }
-    return await client
-      .api('/me/onenote/notebooks/' + lambnoteId + '/sections')
-      .post(json)
+    const json = { displayName: sectionName }
+    return await client.api('/me/onenote/notebooks/' + lambnoteId + '/sections').post(json)
   }
 
   // ページ一覧を取得する
@@ -80,9 +76,7 @@ class GraphService {
   // ページを取得する
   async getPage(pageId: string): Promise<string> {
     const client = await this.getAuthClient()
-    const response: ReadableStream = await client
-      .api('/me/onenote/pages/' + pageId + '/content')
-      .getStream()
+    const response: ReadableStream = await client.api('/me/onenote/pages/' + pageId + '/content').getStream()
     const reader = await response.getReader()
     const stream = new ReadableStream({
       async start(controller) {
@@ -100,20 +94,29 @@ class GraphService {
     return await new Response(stream).text()
   }
 
+  // ページタイトルを更新する
   async updatePageTitle(pageId: string, stream: UpdateContent[]): Promise<boolean> {
-    // const json = JSON.stringify(stream)
-    const json = [
-      {
-        'target': 'title',
-        'action': 'replace',
-        'content': '調査変更後'
-      }
-    ]
-    console.log(json)
     const client = await this.getAuthClient()
+    const response = await client.api('/me/onenote/pages/' + pageId + '/content').patch(JSON.stringify(stream))
+    console.log(response)
+    return response
+  }
+
+  // ページを新規作成する
+  async createNewPage(sectionId: string, pageName: string): Promise<OnenotePage> {
+    const client = await this.getAuthClient()
+    const html =
+      '<!DOCTYPE html>' +
+      '<html lang="ja-JP"><head>' +
+      '<title>' +
+      pageName +
+      '</title>' +
+      '</head>' +
+      '<body></body></html>'
     const response = await client
-      .api('/me/onenote/pages/' + pageId + '/content')
-      .patch(JSON.stringify(stream))
+      .api('/me/onenote/sections/' + sectionId + '/pages')
+      .header('Content-Type', 'application/xhtml+xml')
+      .post(html)
     console.log(response)
     return response
   }

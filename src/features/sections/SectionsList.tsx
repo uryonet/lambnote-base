@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectNote } from 'features/notes/noteSlice'
-import { createNewSection, fetchSectionsData, selectSections } from 'features/sections/sectionsSlice'
+import {
+  setCurrentSectionId,
+  createNewSection,
+  fetchSectionsData,
+  selectSections
+} from 'features/sections/sectionsSlice'
 import { fetchPagesData } from '../pages/pagesSlice'
 
 export const SectionsList: React.FC = () => {
@@ -27,6 +32,7 @@ export const SectionsList: React.FC = () => {
 
   const handleSection = (id: string | undefined) => {
     if (id) {
+      dispatch(setCurrentSectionId(id))
       dispatch(fetchPagesData(id))
     }
   }

@@ -84,10 +84,10 @@ export const Editor: React.FC = () => {
 
   return (
     <div className="main-editor">
-      <h3>タイトル</h3>
+      <h2>タイトル</h2>
       <button onClick={handleUpdateTitle}>タイトル保存</button>
       <input className="title-input" value={pageTitle} onChange={handleTitleChange} />
-      <h3>コンテンツ</h3>
+      <h2>コンテンツ</h2>
       <button>コンテンツ保存</button>
       <div className="editor" ref={pmEditor} />
     </div>
