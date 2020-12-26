@@ -73,11 +73,16 @@ export const pagesSlice = createSlice({
     },
     setPageTitle: (state, action: PayloadAction<string>) => {
       state.currentPageTitle = action.payload
+    },
+    setNewPage: (state, action: PayloadAction<OnenotePage>) => {
+      state.isLoading = false
+      state.error = null
+      state.pages.push(action.payload)
     }
   }
 })
 
-export const { startLoading, failureLoading, setPagesData, setPageData, setPageTitle } = pagesSlice.actions
+export const { startLoading, failureLoading, setPagesData, setPageData, setPageTitle, setNewPage } = pagesSlice.actions
 export default pagesSlice.reducer
 
 export const selectPages = (state: RootState) => state.pages
@@ -125,5 +130,19 @@ export const updatePageTitle = (pageId: string, title: string): AppThunk => asyn
     }
   } catch (e) {
     console.log(e)
+  }
+}
+
+export const createNewPage = (sectionId: string | undefined, pageName: string): AppThunk => async (dispatch) => {
+  try {
+    dispatch(startLoading())
+    if (sectionId === undefined) {
+      throw new Error('sectionId is undefined')
+    }
+    const newPage = await graphService.createNewPage(sectionId, pageName)
+    console.log(newPage)
+    dispatch(setNewPage(newPage))
+  } catch (e) {
+    dispatch(failureLoading(e.toString()))
   }
 }

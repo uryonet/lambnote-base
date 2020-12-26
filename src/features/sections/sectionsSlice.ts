@@ -55,12 +55,18 @@ export const sectionsSlice = createSlice({
   }
 })
 
-export const { startLoading, failureLoading, setCurrentSectionId, setSectionsData, setNewSection } = sectionsSlice.actions
+export const {
+  startLoading,
+  failureLoading,
+  setCurrentSectionId,
+  setSectionsData,
+  setNewSection
+} = sectionsSlice.actions
 export default sectionsSlice.reducer
 
 export const selectSections = (state: RootState) => state.sections
 
-export const fetchSectionsData = (lambnoteId: string): AppThunk => async dispatch => {
+export const fetchSectionsData = (lambnoteId: string): AppThunk => async (dispatch) => {
   try {
     dispatch(startLoading())
     const sections = await graphService.getSectionsList(lambnoteId)
@@ -72,18 +78,15 @@ export const fetchSectionsData = (lambnoteId: string): AppThunk => async dispatc
   }
 }
 
-export const createNewSection = (
-  lambnoteId: string | undefined,
-  sectionName: string
-): AppThunk => async dispatch => {
+export const createNewSection = (lambnoteId: string | undefined, sectionName: string): AppThunk => async (dispatch) => {
   try {
     dispatch(startLoading())
     if (lambnoteId === undefined) {
       throw new Error('lambnoteId is undefined')
     }
-    const section = await graphService.createNewSection(lambnoteId, sectionName)
-    console.log(section)
-    dispatch(setNewSection(section))
+    const newSection = await graphService.createNewSection(lambnoteId, sectionName)
+    console.log(newSection)
+    dispatch(setNewSection(newSection))
   } catch (e) {
     dispatch(failureLoading(e.toString()))
   }
