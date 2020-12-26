@@ -33,7 +33,7 @@ class GraphService {
     const response = await client
       .api('/me/onenote/notebooks')
       .select('id,displayName')
-      .filter('displayName eq \'LambNote\'')
+      .filter("displayName eq 'LambNote'")
       .get()
     return response.value
   }
@@ -105,12 +105,18 @@ class GraphService {
   // ページを新規作成する
   async createNewPage(sectionId: string, pageName: string): Promise<OnenotePage> {
     const client = await this.getAuthClient()
-    const html = '<!DOCTYPE html>' +
+    const html =
+      '<!DOCTYPE html>' +
       '<html lang="ja-JP"><head>' +
-      '<title>' + pageName + '</title>' +
+      '<title>' +
+      pageName +
+      '</title>' +
       '</head>' +
       '<body></body></html>'
-    const response = await client.api('/me/onenote/sections/' + sectionId + '/pages').post(html)
+    const response = await client
+      .api('/me/onenote/sections/' + sectionId + '/pages')
+      .header('Content-Type', 'application/xhtml+xml')
+      .post(html)
     console.log(response)
     return response
   }
