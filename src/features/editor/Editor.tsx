@@ -2,12 +2,12 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectPages, updatePageTitle } from 'features/pages/pagesSlice'
 
-import graphService from 'lib/graph/GraphService'
 import { EditorState } from 'prosemirror-state'
 import { EditorView } from 'prosemirror-view'
 import { DOMParser, Node as ProsemirrorNode } from 'prosemirror-model'
 import schema from 'lib/prosemirror/schema'
 import { pmPlugins } from '../../lib/prosemirror/PmPlugins'
+import applyDevTools from 'prosemirror-dev-tools'
 
 export const Editor: React.FC = () => {
   const dispatch = useDispatch()
@@ -56,6 +56,9 @@ export const Editor: React.FC = () => {
   //初回レンダリング時のみ動作する
   useEffect(() => {
     createEditorView(pmEditor.current)
+    if (eView.current) {
+      applyDevTools(eView.current)
+    }
     return () => eView.current?.destroy()
   }, [])
 
