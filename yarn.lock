@@ -1925,6 +1925,14 @@
     "@types/prosemirror-state" "*"
     "@types/prosemirror-view" "*"
 
+"@types/prosemirror-dev-tools@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@types/prosemirror-dev-tools/-/prosemirror-dev-tools-2.1.0.tgz#91e2ef4f36129f5155f924296e306de187e86bdb"
+  integrity sha512-OhnSaC4yrrEMLPRUkEWcHAIPVqgKlLkE4kISqL3cHeAYxASouSPvPMLqhBIbWkGwaozy43DjjVC1OXkxTo+y5Q==
+  dependencies:
+    "@types/prosemirror-state" "*"
+    "@types/prosemirror-view" "*"
+
 "@types/prosemirror-history@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@types/prosemirror-history/-/prosemirror-history-1.0.1.tgz#b8d7595f73788b63fc9f2b57a763ba8375abfe87"
