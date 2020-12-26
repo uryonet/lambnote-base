@@ -5,8 +5,8 @@ import { selectPages, updatePageTitle } from 'features/pages/pagesSlice'
 import graphService from 'lib/graph/GraphService'
 import { EditorState } from 'prosemirror-state'
 import { EditorView } from 'prosemirror-view'
-import { DOMParser } from 'prosemirror-model'
-import { schema } from 'prosemirror-schema-basic'
+import { DOMParser, Node as ProsemirrorNode } from 'prosemirror-model'
+import schema from 'lib/prosemirror/schema'
 import { pmPlugins } from '../../lib/prosemirror/PmPlugins'
 
 export const Editor: React.FC = () => {
@@ -21,18 +21,36 @@ export const Editor: React.FC = () => {
   const createEditorView = (element: HTMLDivElement | null) => {
     console.log('editorViewを作成します')
     if (element) {
-      const eState = EditorState.create({
-        schema,
-        plugins: pmPlugins()
-      })
       eView.current = new EditorView(element, {
-        state: eState,
+        state: createEditorState(),
         dispatchTransaction(transaction) {
           let newState = this.state.apply(transaction)
           this.updateState(newState)
         }
       })
     }
+  }
+
+  const createEditorState = (value?: string): EditorState => {
+    console.log('editorStateを作成します')
+    const doc = createDocument(value)
+    return EditorState.create({
+      schema,
+      // @ts-ignore
+      doc,
+      plugins: pmPlugins()
+    })
+  }
+
+  const createDocument = (content?: string): ProsemirrorNode<any> | null | undefined => {
+    const tempEl = document.createElement('div')
+    if (content) {
+      tempEl.innerHTML = content
+      if (tempEl.firstElementChild) {
+        return DOMParser.fromSchema(schema).parse(tempEl.firstElementChild)
+      }
+    }
+    return null
   }
 
   //初回レンダリング時のみ動作する
@@ -45,26 +63,13 @@ export const Editor: React.FC = () => {
   useEffect(() => {
     if (renderFlgRef.current) {
       console.log('editorStateの更新')
-      // const bodyElement = convertElementFromHTML(currentPageBody)
-      // if (bodyElement) {
-      //   const doc = DOMParser.fromSchema(schema).parse(bodyElement)
-      //   const editorState = EditorState.create({
-      //     doc,
-      //     plugins: pmPlugins()
-      //   })
-      //   eView.current?.updateState(editorState)
-      // }
+      const newState = createEditorState(currentPageBody)
+      eView.current?.updateState(newState)
       setPageTitle(currentPageTitle)
     } else {
       renderFlgRef.current = true
     }
   }, [currentPageBody])
-
-  const convertElementFromHTML = (htmlStr: string): Element | null => {
-    const tempEl = document.createElement('div')
-    tempEl.innerHTML = htmlStr
-    return tempEl.firstElementChild
-  }
 
   const handleUpdateTitle = () => {
     dispatch(updatePageTitle(currentPageId, pageTitle))
