@@ -33,6 +33,16 @@ header {
   width: 200px;
 }
 
+.create-section {
+  input {
+    box-sizing: border-box;
+    width: 100%;
+  }
+  button {
+    width: 100%;
+  }
+}
+
 .pages-list {
   border-right: 1px solid #ddd;
   width: 200px;
