@@ -39,7 +39,8 @@ export const SectionsList: React.FC = () => {
   }
 
   const handleDelSection = (id: string | undefined) => {
-    if (id) {
+    const result = window.confirm('セクションを削除します')
+    if (result && id) {
       dispatch(deleteSection(id))
     }
   }
