@@ -62,6 +62,12 @@ class GraphService {
     return await client.api('/me/onenote/notebooks/' + lambnoteId + '/sections').post(json)
   }
 
+  // セクションを削除する
+  async deleteSection(sectionId: string) {
+    const client = await this.getAuthClient()
+    await client.api('/me/onenote/sections/' + sectionId).version('beta').delete()
+  }
+
   // ページ一覧を取得する
   async getPages(sectionId: string): Promise<OnenotePage[]> {
     const client = await this.getAuthClient()
