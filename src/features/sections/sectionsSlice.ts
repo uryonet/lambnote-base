@@ -51,6 +51,11 @@ export const sectionsSlice = createSlice({
       state.isLoading = false
       state.error = null
       state.sections.push(action.payload)
+    },
+    setDelSection: (state, action: PayloadAction<string>) => {
+      state.isLoading = false
+      state.error = null
+      state.sections = state.sections.filter((n) => n.id !== action.payload)
     }
   }
 })
@@ -60,7 +65,8 @@ export const {
   failureLoading,
   setCurrentSectionId,
   setSectionsData,
-  setNewSection
+  setNewSection,
+  setDelSection
 } = sectionsSlice.actions
 export default sectionsSlice.reducer
 
@@ -87,6 +93,19 @@ export const createNewSection = (lambnoteId: string | undefined, sectionName: st
     const newSection = await graphService.createNewSection(lambnoteId, sectionName)
     console.log(newSection)
     dispatch(setNewSection(newSection))
+  } catch (e) {
+    dispatch(failureLoading(e.toString()))
+  }
+}
+
+export const deleteSection = (sectionId: string | undefined): AppThunk => async (dispatch) => {
+  try {
+    dispatch(startLoading())
+    if (sectionId === undefined) {
+      throw new Error('sectionId is undefined')
+    }
+    await graphService.deleteSection(sectionId)
+    dispatch(setDelSection(sectionId))
   } catch (e) {
     dispatch(failureLoading(e.toString()))
   }
