@@ -78,11 +78,24 @@ export const pagesSlice = createSlice({
       state.isLoading = false
       state.error = null
       state.pages.push(action.payload)
+    },
+    setDelPage: (state, action: PayloadAction<string>) => {
+      state.isLoading = false
+      state.error = null
+      state.pages = state.pages.filter((n) => n.id !== action.payload)
     }
   }
 })
 
-export const { startLoading, failureLoading, setPagesData, setPageData, setPageTitle, setNewPage } = pagesSlice.actions
+export const {
+  startLoading,
+  failureLoading,
+  setPagesData,
+  setPageData,
+  setPageTitle,
+  setNewPage,
+  setDelPage
+} = pagesSlice.actions
 export default pagesSlice.reducer
 
 export const selectPages = (state: RootState) => state.pages
@@ -142,6 +155,19 @@ export const createNewPage = (sectionId: string | undefined, pageName: string): 
     const newPage = await graphService.createNewPage(sectionId, pageName)
     console.log(newPage)
     dispatch(setNewPage(newPage))
+  } catch (e) {
+    dispatch(failureLoading(e.toString()))
+  }
+}
+
+export const deletePage = (pageId: string | undefined): AppThunk => async (dispatch) => {
+  try {
+    dispatch(startLoading())
+    if (pageId === undefined) {
+      throw new Error('pageId is undefined')
+    }
+    await graphService.deletePage(pageId)
+    dispatch(setDelPage(pageId))
   } catch (e) {
     dispatch(failureLoading(e.toString()))
   }

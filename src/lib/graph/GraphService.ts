@@ -126,6 +126,12 @@ class GraphService {
     console.log(response)
     return response
   }
+
+  // ページを削除する
+  async deletePage(pageId: string) {
+    const client = await this.getAuthClient()
+    await client.api('/me/onenote/pages/' + pageId).delete()
+  }
 }
 
 const graphService = new GraphService()
