@@ -65,7 +65,7 @@ class GraphService {
   // セクションを削除する
   async deleteSection(sectionId: string) {
     const client = await this.getAuthClient()
-    await client.api('/me/onenote/sections/' + sectionId).delete()
+    await client.api('/me/onenote/sections/' + sectionId).version('beta').delete()
   }
 
   // ページ一覧を取得する

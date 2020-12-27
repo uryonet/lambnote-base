@@ -28,35 +28,48 @@ header {
   height: calc(100vh - 171.44px);
 }
 
-.sections-list {
-  padding: 10px;
-  border-right: 1px solid #ddd;
-  width: 180px;
-}
+.sidebar {
+  display: flex;
+  width: 402px;
 
-.create-section {
-  input {
-    box-sizing: border-box;
-    width: 100%;
+  ul {
+    padding-left: 20px;
   }
-  button {
-    width: 100%;
-  }
-}
 
-.pages-list {
-  padding: 10px;
-  border-right: 1px solid #ddd;
-  width: 180px;
-}
-
-.create-page {
-  input {
-    box-sizing: border-box;
-    width: 100%;
+  .delBtn {
+    margin-left: 5px;
   }
-  button {
-    width: 100%;
+
+  .sections-list {
+    padding: 10px;
+    border-right: 1px solid #ddd;
+    width: 180px;
+  }
+
+  .create-section {
+    input {
+      box-sizing: border-box;
+      width: 100%;
+    }
+    button {
+      width: 100%;
+    }
+  }
+
+  .pages-list {
+    padding: 10px;
+    border-right: 1px solid #ddd;
+    width: 180px;
+  }
+
+  .create-page {
+    input {
+      box-sizing: border-box;
+      width: 100%;
+    }
+    button {
+      width: 100%;
+    }
   }
 }
 

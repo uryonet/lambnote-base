@@ -3,9 +3,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { selectNote } from 'features/notes/noteSlice'
 import {
   setCurrentSectionId,
-  createNewSection,
+  selectSections,
   fetchSectionsData,
-  selectSections
+  createNewSection,
+  deleteSection
 } from 'features/sections/sectionsSlice'
 import { fetchPagesData } from '../pages/pagesSlice'
 
@@ -37,6 +38,12 @@ export const SectionsList: React.FC = () => {
     }
   }
 
+  const handleDelSection = (id: string | undefined) => {
+    if (id) {
+      dispatch(deleteSection(id))
+    }
+  }
+
   return (
     <div className="sections-list">
       <h2>セクション</h2>
@@ -51,6 +58,9 @@ export const SectionsList: React.FC = () => {
               <a href="#" onClick={() => handleSection(id)}>
                 {displayName}
               </a>
+              <button className="delBtn" onClick={() => handleDelSection(id)}>
+                x
+              </button>
             </li>
           )
         })}

@@ -25,8 +25,10 @@ const App: React.FC = () => {
       <div className="container">
         <LambHeader />
         <div className="content">
-          <SectionsList />
-          <PagesList />
+          <div className="sidebar">
+            <SectionsList />
+            <PagesList />
+          </div>
           <Editor />
         </div>
       </div>
