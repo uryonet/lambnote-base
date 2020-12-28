@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { selectPages, updatePageTitle } from 'features/pages/pagesSlice'
+import { selectPages, updatePageContent, updatePageTitle } from 'features/pages/pagesSlice'
 
 import { EditorState } from 'prosemirror-state'
 import { EditorView } from 'prosemirror-view'
-import { DOMParser, Node as ProsemirrorNode } from 'prosemirror-model'
+import { DOMParser, DOMSerializer, Node as ProsemirrorNode } from 'prosemirror-model'
 import schema from 'lib/prosemirror/schema'
 import { pmPlugins } from '../../lib/prosemirror/PmPlugins'
 import applyDevTools from 'prosemirror-dev-tools'
@@ -12,7 +12,7 @@ import applyDevTools from 'prosemirror-dev-tools'
 export const Editor: React.FC = () => {
   const dispatch = useDispatch()
   const [pageTitle, setPageTitle] = useState('')
-  const { currentPageId, currentPageTitle, currentPageBody } = useSelector(selectPages)
+  const { currentPageId, currentPageTitle, currentPageBody, currentDivId } = useSelector(selectPages)
 
   const pmEditor = useRef<HTMLDivElement>(null)
   const eView = useRef<EditorView | null>(null)
@@ -36,7 +36,6 @@ export const Editor: React.FC = () => {
     const doc = createDocument(value)
     return EditorState.create({
       schema,
-      // @ts-ignore
       doc,
       plugins: pmPlugins()
     })
@@ -82,13 +81,24 @@ export const Editor: React.FC = () => {
     setPageTitle(event.target.value)
   }
 
+  const handleUpdateContent = () => {
+    const doc = eView.current?.state.doc.content
+    if (doc) {
+      const docHtml = DOMSerializer.fromSchema(schema).serializeFragment(doc)
+      const container = document.createElement('article')
+      container.appendChild(docHtml)
+      console.log(container.innerHTML)
+      dispatch(updatePageContent(currentPageId, currentDivId, container.innerHTML))
+    }
+  }
+
   return (
     <div className="main-editor">
       <h2>タイトル</h2>
       <button onClick={handleUpdateTitle}>タイトル保存</button>
       <input className="title-input" value={pageTitle} onChange={handleTitleChange} />
       <h2>コンテンツ</h2>
-      <button>コンテンツ保存</button>
+      <button onClick={handleUpdateContent}>コンテンツ保存</button>
       <div className="editor" ref={pmEditor} />
     </div>
   )
