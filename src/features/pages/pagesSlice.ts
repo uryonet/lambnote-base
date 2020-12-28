@@ -8,6 +8,7 @@ interface PageInfo {
   currentPageId: string
   currentPageTitle: string
   currentPageBody: string
+  currentDivId: string | undefined
 }
 
 interface PagesInfo {
@@ -26,7 +27,8 @@ const initialState: PagesState = {
   pages: [],
   currentPageId: '',
   currentPageTitle: '',
-  currentPageBody: ''
+  currentPageBody: '',
+  currentDivId: undefined
 }
 
 export interface UpdateContent {
@@ -46,6 +48,7 @@ const loadingFailed = (state: PagesState, action: PayloadAction<string>) => {
   state.currentPageId = ''
   state.currentPageTitle = ''
   state.currentPageBody = ''
+  state.currentDivId = undefined
 }
 
 export const pagesSlice = createSlice({
@@ -60,7 +63,7 @@ export const pagesSlice = createSlice({
       state.pages = action.payload
     },
     setPageData: (state, action: PayloadAction<PageInfo>) => {
-      const { currentPageId, currentPageTitle, currentPageBody } = action.payload
+      const { currentPageId, currentPageTitle, currentPageBody, currentDivId } = action.payload
       console.log('タイトル: ')
       console.log(currentPageTitle)
       console.log('ボディ: ')
@@ -70,6 +73,7 @@ export const pagesSlice = createSlice({
       state.currentPageId = currentPageId
       state.currentPageTitle = currentPageTitle
       state.currentPageBody = currentPageBody
+      state.currentDivId = currentDivId
     },
     setPageTitle: (state, action: PayloadAction<PageInfo>) => {
       const { currentPageId, currentPageTitle } = action.payload
@@ -123,11 +127,22 @@ export const fetchPageData = (pageId: string): AppThunk => async (dispatch) => {
   try {
     dispatch(startLoading())
     const page = await graphService.getPage(pageId)
+    console.log(page)
     const { title, body } = new DOMParser().parseFromString(page, 'text/html')
+    console.log('ページのコンテンツ解析用：')
+    let divId: string | undefined = undefined
+    const divEl = body.firstElementChild
+    console.log(body.firstElementChild)
+    if (divEl) {
+      if (divEl.getAttribute('data-id') === '_default') {
+        divId = divEl.id
+      }
+    }
     const payload: PageInfo = {
       currentPageId: pageId,
       currentPageTitle: title,
-      currentPageBody: body.innerHTML
+      currentPageBody: body.innerHTML,
+      currentDivId: divId
     }
     dispatch(setPageData(payload))
   } catch (e) {
@@ -145,8 +160,46 @@ export const updatePageTitle = (pageId: string, title: string): AppThunk => asyn
         content: title
       }
     ]
-    await graphService.updatePageTitle(pageId, stream)
-    dispatch(setPageTitle({ currentPageId: pageId, currentPageTitle: title, currentPageBody: '' }))
+    await graphService.updatePageContent(pageId, stream)
+    dispatch(
+      setPageTitle({
+        currentPageId: pageId,
+        currentPageTitle: title,
+        currentPageBody: '',
+        currentDivId: undefined
+      })
+    )
+    dispatch(fetchPageData(pageId))
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+export const updatePageContent = (pageId: string, divId: string | undefined, body: string): AppThunk => async (
+  dispatch
+) => {
+  try {
+    dispatch(startLoading())
+    let stream: UpdateContent[]
+    if (divId) {
+      stream = [
+        {
+          target: divId,
+          action: 'replace',
+          content: body
+        }
+      ]
+    } else {
+      stream = [
+        {
+          target: 'body',
+          action: 'append',
+          content: body
+        }
+      ]
+    }
+    await graphService.updatePageContent(pageId, stream)
+    dispatch(fetchPageData(pageId))
   } catch (e) {
     console.log(e)
   }

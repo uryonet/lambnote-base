@@ -65,7 +65,10 @@ class GraphService {
   // セクションを削除する
   async deleteSection(sectionId: string) {
     const client = await this.getAuthClient()
-    await client.api('/me/onenote/sections/' + sectionId).version('beta').delete()
+    await client
+      .api('/me/onenote/sections/' + sectionId)
+      .version('beta')
+      .delete()
   }
 
   // ページ一覧を取得する
@@ -82,7 +85,9 @@ class GraphService {
   // ページを取得する
   async getPage(pageId: string): Promise<string> {
     const client = await this.getAuthClient()
-    const response: ReadableStream = await client.api('/me/onenote/pages/' + pageId + '/content').getStream()
+    const response: ReadableStream = await client
+      .api('/me/onenote/pages/' + pageId + '/content?includeIDs=true')
+      .getStream()
     const reader = await response.getReader()
     const stream = new ReadableStream({
       async start(controller) {
@@ -100,11 +105,11 @@ class GraphService {
     return await new Response(stream).text()
   }
 
-  // ページタイトルを更新する
-  async updatePageTitle(pageId: string, stream: UpdateContent[]) {
+  // ページコンテンツ（タイトル含む）を更新する
+  async updatePageContent(pageId: string, stream: UpdateContent[]) {
     const client = await this.getAuthClient()
     await client.api('/me/onenote/pages/' + pageId + '/content').patch(JSON.stringify(stream))
-}
+  }
 
   // ページを新規作成する
   async createNewPage(sectionId: string, pageName: string): Promise<OnenotePage> {
@@ -117,6 +122,7 @@ class GraphService {
       '</title>' +
       '</head>' +
       '<body></body></html>'
+    console.log(html)
     const response = await client
       .api('/me/onenote/sections/' + sectionId + '/pages')
       .header('Content-Type', 'application/xhtml+xml')
