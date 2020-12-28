@@ -71,8 +71,15 @@ export const pagesSlice = createSlice({
       state.currentPageTitle = currentPageTitle
       state.currentPageBody = currentPageBody
     },
-    setPageTitle: (state, action: PayloadAction<string>) => {
-      state.currentPageTitle = action.payload
+    setPageTitle: (state, action: PayloadAction<PageInfo>) => {
+      const { currentPageId, currentPageTitle } = action.payload
+      state.currentPageTitle = currentPageTitle
+      state.pages = state.pages.map((n) => {
+        if (n.id === currentPageId) {
+          n.title = currentPageTitle
+        }
+        return n
+      })
     },
     setNewPage: (state, action: PayloadAction<OnenotePage>) => {
       state.isLoading = false
@@ -130,6 +137,7 @@ export const fetchPageData = (pageId: string): AppThunk => async (dispatch) => {
 
 export const updatePageTitle = (pageId: string, title: string): AppThunk => async (dispatch) => {
   try {
+    dispatch(startLoading())
     const stream: UpdateContent[] = [
       {
         target: 'title',
@@ -137,10 +145,8 @@ export const updatePageTitle = (pageId: string, title: string): AppThunk => asyn
         content: title
       }
     ]
-    const result = await graphService.updatePageTitle(pageId, stream)
-    if (result) {
-      dispatch(setPageTitle(title))
-    }
+    await graphService.updatePageTitle(pageId, stream)
+    dispatch(setPageTitle({ currentPageId: pageId, currentPageTitle: title, currentPageBody: '' }))
   } catch (e) {
     console.log(e)
   }

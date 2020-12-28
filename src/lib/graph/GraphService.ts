@@ -101,12 +101,10 @@ class GraphService {
   }
 
   // ページタイトルを更新する
-  async updatePageTitle(pageId: string, stream: UpdateContent[]): Promise<boolean> {
+  async updatePageTitle(pageId: string, stream: UpdateContent[]) {
     const client = await this.getAuthClient()
-    const response = await client.api('/me/onenote/pages/' + pageId + '/content').patch(JSON.stringify(stream))
-    console.log(response)
-    return response
-  }
+    await client.api('/me/onenote/pages/' + pageId + '/content').patch(JSON.stringify(stream))
+}
 
   // ページを新規作成する
   async createNewPage(sectionId: string, pageName: string): Promise<OnenotePage> {
