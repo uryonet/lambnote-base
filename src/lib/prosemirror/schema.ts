@@ -1,4 +1,5 @@
-import { DOMOutputSpec, MarkSpec, Node, NodeSpec, Schema } from 'prosemirror-model'
+import { DOMOutputSpec, MarkSpec, NodeSpec, Schema } from 'prosemirror-model'
+import TableNodeSpecs from 'lib/prosemirror/TableNodeSpecs'
 import OrderedMap from 'orderedmap'
 
 const preDOM: DOMOutputSpec = ['pre', ['code', 0]]
@@ -59,7 +60,7 @@ const nodes: OrderedMap<NodeSpec> = OrderedMap.from({
   },
   ordered_list: {
     group: 'block',
-    content: 'list_item+',
+    content: 'list_item+'
     // attrs: {
     //   order: { default: 1 }
     // },
@@ -112,7 +113,8 @@ export const marks: OrderedMap<MarkSpec> = OrderedMap.from({
 })
 
 const schema = new Schema({
-  nodes: nodes,
+  // @ts-ignore
+  nodes: nodes.append(TableNodeSpecs),
   marks: marks
 })
 
