@@ -1,11 +1,10 @@
 import { DOMOutputSpec, MarkSpec, NodeSpec, Schema } from 'prosemirror-model'
+import TableNodeSpecs from 'lib/prosemirror/TableNodeSpecs'
 import OrderedMap from 'orderedmap'
 
-const pDOM: DOMOutputSpec = ['p', 0]
-const blockquoteDOM: DOMOutputSpec = ['blockquote', 0]
-const hrDOM: DOMOutputSpec = ['hr']
 const preDOM: DOMOutputSpec = ['pre', ['code', 0]]
 const brDOM: DOMOutputSpec = ['br']
+const olDOM: DOMOutputSpec = ['ol', 0]
 
 const nodes: OrderedMap<NodeSpec> = OrderedMap.from({
   doc: {
@@ -16,29 +15,13 @@ const nodes: OrderedMap<NodeSpec> = OrderedMap.from({
     group: 'block',
     parseDOM: [{ tag: 'p' }],
     toDOM() {
-      return pDOM
-    }
-  },
-  blockquote: {
-    content: 'block+',
-    group: 'block',
-    defining: true,
-    parseDOM: [{ tag: 'blockquote' }],
-    toDOM() {
-      return blockquoteDOM
-    }
-  },
-  horizontal_rule: {
-    group: 'block',
-    parseDOM: [{ tag: 'hr' }],
-    toDOM() {
-      return hrDOM
+      return ['p', 0]
     }
   },
   heading: {
-    attrs: { level: { default: 1 } },
     content: 'inline*',
     group: 'block',
+    attrs: { level: { default: 1 } },
     defining: true,
     parseDOM: [
       { tag: 'h1', attrs: { level: 1 } },
@@ -52,19 +35,19 @@ const nodes: OrderedMap<NodeSpec> = OrderedMap.from({
       return ['h' + node.attrs.level, 0]
     }
   },
+  text: {
+    group: 'inline'
+  },
   code_block: {
-    content: 'text*',
-    marks: '',
+    content: 'inline*',
     group: 'block',
+    marks: '_',
     code: true,
     defining: true,
     parseDOM: [{ tag: 'pre', preserveWhitespace: 'full' }],
     toDOM() {
       return preDOM
     }
-  },
-  text: {
-    group: 'inline'
   },
   hard_break: {
     inline: true,
@@ -73,6 +56,40 @@ const nodes: OrderedMap<NodeSpec> = OrderedMap.from({
     parseDOM: [{ tag: 'br' }],
     toDOM() {
       return brDOM
+    }
+  },
+  ordered_list: {
+    group: 'block',
+    content: 'list_item+'
+    // attrs: {
+    //   order: { default: 1 }
+    // },
+    // parseDOM: [
+    //   {
+    //     tag: 'ol',
+    //     getAttrs(dom: HTMLElement) {
+    //       return { order: dom.hasAttribute('start') ? dom.getAttribute('start') : 1 }
+    //     }
+    //   }
+    // ],
+    // toDOM(node: Node) {
+    //   return node.attrs.order == 1 ? olDOM : ['ol', { start: node.attrs.order }, 0]
+    // }
+  },
+  bullet_list: {
+    group: 'block',
+    content: 'list_item+',
+    parseDOM: [{ tag: 'ul' }],
+    toDOM() {
+      return ['ul', 0]
+    }
+  },
+  list_item: {
+    content: 'paragraph',
+    defining: true,
+    parseDOM: [{ tag: 'li' }],
+    toDOM() {
+      return ['li', 0]
     }
   }
 })
@@ -96,7 +113,8 @@ export const marks: OrderedMap<MarkSpec> = OrderedMap.from({
 })
 
 const schema = new Schema({
-  nodes: nodes,
+  // @ts-ignore
+  nodes: nodes.append(TableNodeSpecs),
   marks: marks
 })
 

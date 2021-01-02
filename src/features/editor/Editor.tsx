@@ -37,7 +37,7 @@ export const Editor: React.FC = () => {
     return EditorState.create({
       schema,
       doc,
-      plugins: pmPlugins()
+      plugins: pmPlugins(schema)
     })
   }
 
