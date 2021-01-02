@@ -62,6 +62,13 @@ class GraphService {
     return await client.api('/me/onenote/notebooks/' + lambnoteId + '/sections').post(json)
   }
 
+  // セクション名を変更する
+  async changeSectionName(sectionId: string, sectionName: string) {
+    const client = await this.getAuthClient()
+    const json = { displayName: sectionName }
+    return await client.api('/me/onenote/sections/' + sectionId).patch(json)
+  }
+
   // セクションを削除する
   async deleteSection(sectionId: string) {
     const client = await this.getAuthClient()
