@@ -45,7 +45,7 @@ export const PagesList: React.FC = () => {
               <a href="#" onClick={() => handlePage(id)}>
                 {title}
               </a>
-              <button className="delBtn" onClick={() => handleDelPage(id)}>
+              <button className="listBtn" onClick={() => handleDelPage(id)}>
                 x
               </button>
             </li>

@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectNote } from 'features/notes/noteSlice'
 import {
-  setCurrentSectionId,
+  setCurrentSectionInfo,
   selectSections,
   fetchSectionsData,
   createNewSection,
+  changeSectionName,
   deleteSection
 } from 'features/sections/sectionsSlice'
 import { fetchPagesData } from '../pages/pagesSlice'
@@ -31,10 +32,16 @@ export const SectionsList: React.FC = () => {
     setSectionName('')
   }
 
-  const handleSection = (id: string | undefined) => {
-    if (id) {
-      dispatch(setCurrentSectionId(id))
+  const handleSection = (id: string | undefined, name: string | null | undefined) => {
+    if (id && name) {
+      dispatch(setCurrentSectionInfo({ currentSectionId: id, currentSectionName: name }))
       dispatch(fetchPagesData(id))
+    }
+  }
+
+  const handleChangeSectionName = (id: string | undefined, name: string | null | undefined) => {
+    if (id && name) {
+      dispatch(changeSectionName(id, name))
     }
   }
 
@@ -56,10 +63,13 @@ export const SectionsList: React.FC = () => {
         {sections.map(({ id, displayName }) => {
           return (
             <li>
-              <a href="#" onClick={() => handleSection(id)}>
+              <a href="#" onClick={() => handleSection(id, displayName)}>
                 {displayName}
               </a>
-              <button className="delBtn" onClick={() => handleDelSection(id)}>
+              <button className="listBtn" onClick={() => handleChangeSectionName(id, sectionName)}>
+                r
+              </button>
+              <button className="listBtn" onClick={() => handleDelSection(id)}>
                 x
               </button>
             </li>

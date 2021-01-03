@@ -3,8 +3,8 @@
 body {
   margin: 0;
   font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
-    'Helvetica Neue', sans-serif;
+  'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+  'Helvetica Neue', sans-serif;
   font-weight: 500;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -36,7 +36,7 @@ header {
     padding-left: 20px;
   }
 
-  .delBtn {
+  .listBtn {
     margin-left: 5px;
   }
 
@@ -51,6 +51,7 @@ header {
       box-sizing: border-box;
       width: 100%;
     }
+
     button {
       width: 100%;
     }
@@ -67,6 +68,7 @@ header {
       box-sizing: border-box;
       width: 100%;
     }
+
     button {
       width: 100%;
     }
@@ -77,6 +79,7 @@ header {
   flex: 1;
   overflow: auto;
   padding: 10px;
+
   .title-input {
     box-sizing: border-box;
     width: 100%;
@@ -85,6 +88,7 @@ header {
 
 .editor {
   border: 1px solid #ddd;
+
   .table-bordered {
     border: 1px solid #ccc;
   }
