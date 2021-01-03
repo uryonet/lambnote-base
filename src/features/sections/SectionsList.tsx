@@ -6,6 +6,7 @@ import {
   selectSections,
   fetchSectionsData,
   createNewSection,
+  changeSectionName,
   deleteSection
 } from 'features/sections/sectionsSlice'
 import { fetchPagesData } from '../pages/pagesSlice'
@@ -38,6 +39,12 @@ export const SectionsList: React.FC = () => {
     }
   }
 
+  const handleChangeSectionName = (id: string | undefined, name: string | null | undefined) => {
+    if (id && name) {
+      dispatch(changeSectionName(id, name))
+    }
+  }
+
   const handleDelSection = (id: string | undefined) => {
     const result = window.confirm('セクションを削除します')
     if (result && id) {
@@ -59,7 +66,10 @@ export const SectionsList: React.FC = () => {
               <a href="#" onClick={() => handleSection(id, displayName)}>
                 {displayName}
               </a>
-              <button className="delBtn" onClick={() => handleDelSection(id)}>
+              <button className="listBtn" onClick={() => handleChangeSectionName(id, sectionName)}>
+                r
+              </button>
+              <button className="listBtn" onClick={() => handleDelSection(id)}>
                 x
               </button>
             </li>
