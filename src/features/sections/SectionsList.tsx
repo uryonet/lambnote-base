@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectNote } from 'features/notes/noteSlice'
 import {
-  setCurrentSectionId,
+  setCurrentSectionInfo,
   selectSections,
   fetchSectionsData,
   createNewSection,
@@ -31,9 +31,9 @@ export const SectionsList: React.FC = () => {
     setSectionName('')
   }
 
-  const handleSection = (id: string | undefined) => {
-    if (id) {
-      dispatch(setCurrentSectionId(id))
+  const handleSection = (id: string | undefined, name: string | null | undefined) => {
+    if (id && name) {
+      dispatch(setCurrentSectionInfo({ currentSectionId: id, currentSectionName: name }))
       dispatch(fetchPagesData(id))
     }
   }
@@ -56,7 +56,7 @@ export const SectionsList: React.FC = () => {
         {sections.map(({ id, displayName }) => {
           return (
             <li>
-              <a href="#" onClick={() => handleSection(id)}>
+              <a href="#" onClick={() => handleSection(id, displayName)}>
                 {displayName}
               </a>
               <button className="delBtn" onClick={() => handleDelSection(id)}>
