@@ -11,7 +11,7 @@ import {
 } from 'features/sections/sectionsSlice'
 import { fetchPagesData } from '../pages/pagesSlice'
 
-import { Button } from 'react-bootstrap'
+import { Button, Form } from 'react-bootstrap'
 
 export const SectionsList: React.FC = () => {
   const dispatch = useDispatch()
@@ -58,10 +58,14 @@ export const SectionsList: React.FC = () => {
     <div className="sections-list">
       <h2>セクション</h2>
       <div className="create-section">
-        <input value={sectionName} onChange={onChangeNewSection} />
-        <Button disabled={isLoading} onClick={handleCreateSection}>
-          {isLoading ? 'Loading...' : 'セクション作成'}
-        </Button>
+        <Form>
+          <Form.Group controlId="formCreateSection">
+            <Form.Control value={sectionName} onChange={onChangeNewSection} />
+            <Button disabled={isLoading} onClick={handleCreateSection}>
+              {isLoading ? 'Loading...' : 'セクション作成'}
+            </Button>
+          </Form.Group>
+        </Form>
       </div>
       <ul>
         {sections.map(({ id, displayName }) => {
