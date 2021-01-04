@@ -11,10 +11,12 @@ import {
 } from 'features/sections/sectionsSlice'
 import { fetchPagesData } from '../pages/pagesSlice'
 
+import { Button } from 'react-bootstrap'
+
 export const SectionsList: React.FC = () => {
   const dispatch = useDispatch()
   const { lambnoteId } = useSelector(selectNote)
-  const { sections } = useSelector(selectSections)
+  const { isLoading, sections } = useSelector(selectSections)
   const [sectionName, setSectionName] = useState('')
 
   useEffect(() => {
@@ -57,7 +59,9 @@ export const SectionsList: React.FC = () => {
       <h2>セクション</h2>
       <div className="create-section">
         <input value={sectionName} onChange={onChangeNewSection} />
-        <button onClick={handleCreateSection}>セクション作成</button>
+        <Button disabled={isLoading} onClick={handleCreateSection}>
+          {isLoading ? 'Loading...' : 'セクション作成'}
+        </Button>
       </div>
       <ul>
         {sections.map(({ id, displayName }) => {
@@ -66,12 +70,17 @@ export const SectionsList: React.FC = () => {
               <a href="#" onClick={() => handleSection(id, displayName)}>
                 {displayName}
               </a>
-              <button className="listBtn" onClick={() => handleChangeSectionName(id, sectionName)}>
+              <Button
+                variant="warning"
+                size="sm"
+                className="listBtn"
+                onClick={() => handleChangeSectionName(id, sectionName)}
+              >
                 r
-              </button>
-              <button className="listBtn" onClick={() => handleDelSection(id)}>
+              </Button>
+              <Button variant="danger" size="sm" className="listBtn" onClick={() => handleDelSection(id)}>
                 x
-              </button>
+              </Button>
             </li>
           )
         })}
