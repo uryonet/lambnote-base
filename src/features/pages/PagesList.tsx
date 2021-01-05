@@ -3,10 +3,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { createNewPage, fetchPageData, selectPages, deletePage } from './pagesSlice'
 import { selectSections } from '../sections/sectionsSlice'
 
+import { Button, Form } from 'react-bootstrap'
+
 export const PagesList: React.FC = () => {
   const dispatch = useDispatch()
   const { currentSectionId } = useSelector(selectSections)
-  const { pages } = useSelector(selectPages)
+  const { isLoading, pages } = useSelector(selectPages)
   const [pageName, setPageName] = useState('')
 
   const onChangeNewPage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,8 +37,14 @@ export const PagesList: React.FC = () => {
     <div className="pages-list">
       <h2>ページ</h2>
       <div className="create-page">
-        <input value={pageName} onChange={onChangeNewPage} />
-        <button onClick={handleCreatePage}>ページ作成</button>
+        <Form>
+          <Form.Group controlId="formCreatePage">
+            <Form.Control value={pageName} onChange={onChangeNewPage} />
+            <Button disabled={isLoading} onClick={handleCreatePage}>
+              {isLoading ? 'Loading...' : 'ページ作成'}
+            </Button>
+          </Form.Group>
+        </Form>
       </div>
       <ul>
         {pages.map(({ id, title }) => {
@@ -45,9 +53,9 @@ export const PagesList: React.FC = () => {
               <a href="#" onClick={() => handlePage(id)}>
                 {title}
               </a>
-              <button className="listBtn" onClick={() => handleDelPage(id)}>
+              <Button variant="danger" size="sm" className="listBtn" onClick={() => handleDelPage(id)}>
                 x
-              </button>
+              </Button>
             </li>
           )
         })}

@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500&display=swap');
+@import "~bootstrap/scss/bootstrap";
 
 body {
-  margin: 0;
   font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Segoe UI',
   'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
   'Helvetica Neue', sans-serif;
@@ -11,18 +11,6 @@ body {
   background: #fafafa;
 }
 
-.container {
-}
-
-header {
-  height: 150px;
-}
-
-.user-info li {
-  display: inline-block;
-  width: 150px;
-}
-
 .content {
   display: flex;
   height: calc(100vh - 171.44px);
@@ -30,7 +18,6 @@ header {
 
 .sidebar {
   display: flex;
-  width: 402px;
 
   ul {
     padding-left: 20px;

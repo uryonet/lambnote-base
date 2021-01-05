@@ -9,6 +9,8 @@ import schema from 'lib/prosemirror/schema'
 import { pmPlugins } from '../../lib/prosemirror/PmPlugins'
 import applyDevTools from 'prosemirror-dev-tools'
 
+import { Button, Col, Form, Row } from 'react-bootstrap'
+
 export const Editor: React.FC = () => {
   const dispatch = useDispatch()
   const [pageTitle, setPageTitle] = useState('')
@@ -94,11 +96,21 @@ export const Editor: React.FC = () => {
 
   return (
     <div className="main-editor">
-      <h2>タイトル</h2>
-      <button onClick={handleUpdateTitle}>タイトル保存</button>
-      <input className="title-input" value={pageTitle} onChange={handleTitleChange} />
+      <Form>
+        <Form.Group as={Row}>
+          <Form.Label column sm="2">
+            タイトル
+          </Form.Label>
+          <Col sm="7">
+            <Form.Control className="mr-3" value={pageTitle} onChange={handleTitleChange} />
+          </Col>
+          <Col sm="3">
+            <Button onClick={handleUpdateTitle}>タイトル保存</Button>
+          </Col>
+        </Form.Group>
+      </Form>
       <h2>コンテンツ</h2>
-      <button onClick={handleUpdateContent}>コンテンツ保存</button>
+      <Button onClick={handleUpdateContent}>コンテンツ保存</Button>
       <div className="editor" ref={pmEditor} />
     </div>
   )

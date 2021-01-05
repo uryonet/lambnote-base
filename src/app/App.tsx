@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { LambHeader } from 'components/header/LambHeader'
+import { Header } from 'components/header/Header'
 import { SectionsList } from 'features/sections/SectionsList'
 import { PagesList } from 'features/pages/PagesList'
 import { Editor } from 'features/editor/Editor'
@@ -22,8 +22,8 @@ const App: React.FC = () => {
 
   if (authService.isAuth()) {
     return (
-      <div className="container">
-        <LambHeader />
+      <div>
+        <Header />
         <div className="content">
           <div className="sidebar">
             <SectionsList />
