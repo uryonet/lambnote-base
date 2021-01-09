@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500&display=swap');
-@import "~bootstrap/scss/bootstrap";
+@import '_custom.scss';
+
+html {
+  font-size: 62.5%;
+}
 
 body {
   font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Segoe UI',
@@ -9,6 +13,11 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: #fafafa;
+}
+
+.avatar-icon {
+  width: 35px;
+  height: 35px;
 }
 
 .content {
