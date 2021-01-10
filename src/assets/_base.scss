@@ -1,0 +1,114 @@
+html, body {
+  height: 100%;
+}
+
+html {
+  font-size: $font-size-initial;
+}
+
+body {
+  font-weight: $font-weight-normal;
+  overflow-x: hidden;
+}
+
+th {
+  font-weight: $font-weight-bold;
+}
+
+b, strong {
+  font-weight: $font-weight-bold;
+}
+
+/// Sidebar Style ///
+
+.sidebar {
+  position: fixed;
+  z-index: 0;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: $sidebar-width;
+  border-right: 1px solid $sidebar-border-color;
+  background-color: $sidebar-bg-color;
+  color: $sidebar-color;
+}
+
+.logo {
+  position: relative;
+  z-index: 100;
+  margin: 0 0 2rem;
+  height: $navbar-height;
+  width: 100%;
+  line-height: $navbar-height;
+  text-align: center;
+  vertical-align: middle;
+  font-weight: $font-weight-bold;
+  font-size: 18px;
+}
+
+.content-list {
+  display: flex;
+
+  ul {
+    padding: 10px 0;
+    list-style: none;
+  }
+
+  li a {
+    display: block;
+    position: relative;
+    padding-left: $sidebar-padding-horizontal + 10px;
+    line-height: 30px;
+    color: $sidebar-color;
+    text-decoration: none;
+
+    &:hover {
+      color: $sidebar-item-hover-color;
+      background-color: $sidebar-item-hover-bg-color;
+    }
+  }
+
+  .selected > a {
+    padding: 10px 0 10px $sidebar-padding-horizontal + 10px;
+    color: $sidebar-item-hover-color;
+    background-color: $sidebar-item-hover-bg-color;
+  }
+}
+
+.sections-list {
+  width: 200px;
+}
+
+.pages-list {
+  width: 200px;
+}
+
+.sidebar-nav-title {
+  margin: 15px 0 5px $sidebar-padding-horizontal;
+  font-size: 14px;
+
+  a:hover {
+    color: $sidebar-white-color;
+  }
+
+  .action-link {
+    color: $sidebar-color;
+    float: right;
+    margin-right: $sidebar-padding-horizontal;
+    margin-top: -1px;
+
+    .fa {
+      font-size: 9px;
+    }
+  }
+}
+
+.create-form {
+  margin: 20px 0;
+  padding: 0 5px;
+}
+
+.avatar-icon {
+  width: 35px;
+  height: 35px;
+}
