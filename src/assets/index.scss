@@ -1,19 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500&display=swap');
-@import '_custom.scss';
-
-html {
-  font-size: 62.5%;
-}
-
-body {
-  font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-  'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
-  'Helvetica Neue', sans-serif;
-  font-weight: 500;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background: #fafafa;
-}
+@import 'variables';
+@import 'mixins';
+@import "~bootstrap/scss/bootstrap";
+@import 'base';
 
 .avatar-icon {
   width: 35px;

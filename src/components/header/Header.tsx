@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { selectUser } from 'features/users/userSlice'
 import * as authService from 'lib/graph/AuthService'
-import { Button, Navbar, NavbarBrand, Nav, Image } from 'react-bootstrap'
+import { Navbar, NavbarBrand, Nav, Image } from 'react-bootstrap'
 import NavbarCollapse from 'react-bootstrap/NavbarCollapse'
 
 export const Header: React.FC = () => {
