@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
-import { Header } from 'components/header/Header'
-import { SectionsList } from 'features/sections/SectionsList'
-import { PagesList } from 'features/pages/PagesList'
+import { Header } from 'components/Header'
+import { Sidebar } from '../components/Sidebar'
 import { Editor } from 'features/editor/Editor'
 import { LoginForm } from 'features/users/LoginForm'
 
@@ -22,16 +21,13 @@ const App: React.FC = () => {
 
   if (authService.isAuth()) {
     return (
-      <div>
-        <Header />
-        <div className="content">
-          <div className="sidebar">
-            <SectionsList />
-            <PagesList />
-          </div>
-          <Editor />
-        </div>
-      </div>
+      <>
+        <Sidebar />
+        {/*<Header />*/}
+        {/*<div className="content">*/}
+        {/*  <Editor />*/}
+        {/*</div>*/}
+      </>
     )
   } else {
     return <LoginForm />

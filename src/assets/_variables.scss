@@ -95,8 +95,7 @@ $link-color: #218bc3 !default;
 // -------------------------
 $sidebar-padding-horizontal: 11px;
 $sidebar-icon-state-width: 50px !default;
-$sidebar-slim-scroll-width: 4px;
-$sidebar-width: 220px + $sidebar-slim-scroll-width !default;
+$sidebar-width: 400px !default;
 
 $sidebar-transition-time: 0.3s !default;
 
@@ -134,7 +133,7 @@ $navbar-font-size: 13px !default;
 $navbar-bg: transparent;
 $navbar-shadow: 4px 4px 30px 0px rgba(75,102,171,0.2);
 
-$chat-sidebar-width: 270px + $sidebar-slim-scroll-width !default;
+$chat-sidebar-width: 270px !default;
 
 $content-padding-vertical: 42px !default;
 $content-padding-top: $content-padding-vertical + $navbar-height !default;

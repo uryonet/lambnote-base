@@ -3,83 +3,79 @@
 @import "~bootstrap/scss/bootstrap";
 @import 'base';
 
-.avatar-icon {
-  width: 35px;
-  height: 35px;
-}
 
-.content {
-  display: flex;
-  height: calc(100vh - 171.44px);
-}
-
-.sidebar {
-  display: flex;
-
-  ul {
-    padding-left: 20px;
-  }
-
-  .listBtn {
-    margin-left: 5px;
-  }
-
-  .sections-list {
-    padding: 10px;
-    border-right: 1px solid #ddd;
-    width: 180px;
-  }
-
-  .create-section {
-    input {
-      box-sizing: border-box;
-      width: 100%;
-    }
-
-    button {
-      width: 100%;
-    }
-  }
-
-  .pages-list {
-    padding: 10px;
-    border-right: 1px solid #ddd;
-    width: 180px;
-  }
-
-  .create-page {
-    input {
-      box-sizing: border-box;
-      width: 100%;
-    }
-
-    button {
-      width: 100%;
-    }
-  }
-}
-
-.main-editor {
-  flex: 1;
-  overflow: auto;
-  padding: 10px;
-
-  .title-input {
-    box-sizing: border-box;
-    width: 100%;
-  }
-}
-
-.editor {
-  border: 1px solid #ddd;
-
-  .table-bordered {
-    border: 1px solid #ccc;
-  }
-}
-
-.ProseMirror {
-  outline: none;
-  height: 100%;
-  overflow: hidden;
-}
+//.content {
+//  display: flex;
+//  height: calc(100vh - 171.44px);
+//}
+//
+//.sidebar {
+//  display: flex;
+//
+//  ul {
+//    padding-left: 20px;
+//  }
+//
+//  .listBtn {
+//    margin-left: 5px;
+//  }
+//
+//  .sections-list {
+//    padding: 10px;
+//    border-right: 1px solid #ddd;
+//    width: 180px;
+//  }
+//
+//  .create-section {
+//    input {
+//      box-sizing: border-box;
+//      width: 100%;
+//    }
+//
+//    button {
+//      width: 100%;
+//    }
+//  }
+//
+//  .pages-list {
+//    padding: 10px;
+//    border-right: 1px solid #ddd;
+//    width: 180px;
+//  }
+//
+//  .create-page {
+//    input {
+//      box-sizing: border-box;
+//      width: 100%;
+//    }
+//
+//    button {
+//      width: 100%;
+//    }
+//  }
+//}
+//
+//.main-editor {
+//  flex: 1;
+//  overflow: auto;
+//  padding: 10px;
+//
+//  .title-input {
+//    box-sizing: border-box;
+//    width: 100%;
+//  }
+//}
+//
+//.editor {
+//  border: 1px solid #ddd;
+//
+//  .table-bordered {
+//    border: 1px solid #ccc;
+//  }
+//}
+//
+//.ProseMirror {
+//  outline: none;
+//  height: 100%;
+//  overflow: hidden;
+//}
