@@ -18,12 +18,6 @@ export const PagesListItem: React.FC = () => {
     }
   }
 
-  const handleDelPage = (id: string | undefined) => {
-    const result = window.confirm('ページを削除します')
-    if (result && id) {
-      dispatch(deletePage(id))
-    }
-  }
 
   if (isLoading) {
     return (
