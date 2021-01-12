@@ -13,14 +13,15 @@ import { fetchPagesData } from '../pages/pagesSlice'
 
 import { Button, FormControl, InputGroup } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus'
+import { faFolder } from '@fortawesome/free-solid-svg-icons/faFolder'
+import { faEllipsisV } from '@fortawesome/free-solid-svg-icons/faEllipsisV'
 
 export const SectionsList: React.FC = () => {
   const dispatch = useDispatch()
   const { lambnoteId } = useSelector(selectNote)
-  const { currentSectionId, sections } = useSelector(selectSections)
-  const [sectionName, setSectionName] = useState('')
-  const [isShowForm, setIsShowForm] = useState(false)
+  const { currentSectionId, currentSectionName, sections } = useSelector(selectSections)
+  const [newSectionName, setNewSectionName] = useState('')
+  const [renewSectionName, setRenewSectionName] = useState('')
 
   useEffect(() => {
     if (lambnoteId) {
@@ -28,14 +29,21 @@ export const SectionsList: React.FC = () => {
     }
   }, [lambnoteId])
 
+  useEffect(() => {
+    setRenewSectionName(currentSectionName ?? '')
+  }, [currentSectionName])
+
   const onChangeNewSection = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSectionName(event.target.value)
+    setNewSectionName(event.target.value)
+  }
+
+  const onChangeRenewSection = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRenewSectionName(event.target.value)
   }
 
   const handleCreateSection = () => {
-    dispatch(createNewSection(lambnoteId, sectionName))
-    setSectionName('')
-    setIsShowForm(!isShowForm)
+    dispatch(createNewSection(lambnoteId, newSectionName))
+    setNewSectionName('')
   }
 
   const handleSection = (id: string | undefined, name: string | null | undefined) => {
@@ -58,32 +66,20 @@ export const SectionsList: React.FC = () => {
     }
   }
 
-  const showForm = () => {
-    setIsShowForm(!isShowForm)
-  }
-
   return (
     <div className="sections-list">
-      <h5 className="sidebar-nav-title">
-        セクション
-        <a className="action-link" onClick={showForm}>
-          <FontAwesomeIcon icon={faPlus} />
-        </a>
-      </h5>
-      <div className={isShowForm ? '' : 'd-none'}>
-        <InputGroup className="create-form" size="sm">
-          <FormControl value={sectionName} onChange={onChangeNewSection} />
-          <InputGroup.Append>
-            <Button onClick={handleCreateSection}>作成</Button>
-          </InputGroup.Append>
-        </InputGroup>
-      </div>
+      <h5 className="sidebar-nav-title">セクション</h5>
       <ul>
         {sections.map(({ id, displayName }) => {
           return (
             <li key={id} className={id === currentSectionId ? 'selected' : ''}>
               <a href="#" onClick={() => handleSection(id, displayName)}>
+                <FontAwesomeIcon icon={faFolder} />
                 {displayName}
+                <FontAwesomeIcon
+                  className={'list-menu ' + id === currentSectionId ? '' : 'd-none'}
+                  icon={faEllipsisV}
+                />
               </a>
               {/*<Button*/}
               {/*  variant="warning"*/}
@@ -100,6 +96,29 @@ export const SectionsList: React.FC = () => {
           )
         })}
       </ul>
+      <div className="create-form">
+        <InputGroup className="create-form-item" size="sm">
+          <FormControl value={newSectionName} onChange={onChangeNewSection} />
+          <InputGroup.Append>
+            <Button onClick={handleCreateSection}>作成</Button>
+          </InputGroup.Append>
+        </InputGroup>
+        <InputGroup className="create-form-item" size="sm">
+          <FormControl value={renewSectionName} onChange={onChangeRenewSection} />
+          <InputGroup.Append>
+            <Button onClick={() => handleChangeSectionName(currentSectionId, renewSectionName)}>変更</Button>
+          </InputGroup.Append>
+        </InputGroup>
+        <Button
+          className="create-form-item"
+          variant="danger"
+          size="sm"
+          block
+          onClick={() => handleDelSection(currentSectionId)}
+        >
+          削除
+        </Button>
+      </div>
     </div>
   )
 }

@@ -48,6 +48,7 @@ b, strong {
 
 .content-list {
   display: flex;
+  height: calc(100% - 86px);
 
   ul {
     padding: 10px 0;
@@ -57,30 +58,45 @@ b, strong {
   li a {
     display: block;
     position: relative;
-    padding-left: $sidebar-padding-horizontal + 10px;
+    padding-left: $sidebar-padding-horizontal;
     line-height: 30px;
     color: $sidebar-color;
     text-decoration: none;
 
-    &:hover {
+    &:hover, &:focus {
       color: $sidebar-item-hover-color;
       background-color: $sidebar-item-hover-bg-color;
+    }
+
+    svg {
+      margin-right: 5px;
+    }
+
+    .list-menu {
+      float: right;
+      height: 30px;
     }
   }
 
   .selected > a {
-    padding: 10px 0 10px $sidebar-padding-horizontal + 10px;
     color: $sidebar-item-hover-color;
     background-color: $sidebar-item-hover-bg-color;
+  }
+
+  .load-spinner {
+    margin-top: 50px;
+    text-align: center;
   }
 }
 
 .sections-list {
   width: 200px;
+  position: relative;
 }
 
 .pages-list {
   width: 200px;
+  position: relative;
 }
 
 .sidebar-nav-title {
@@ -104,8 +120,13 @@ b, strong {
 }
 
 .create-form {
-  margin: 20px 0;
+  position: absolute;
+  bottom: 0;
   padding: 0 5px;
+
+  .create-form-item {
+    margin: 10px 0;
+  }
 }
 
 .avatar-icon {
