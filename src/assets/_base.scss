@@ -48,6 +48,7 @@ b, strong {
 
 .content-list {
   display: flex;
+  height: calc(100% - 86px);
 
   ul {
     padding: 10px 0;
@@ -70,6 +71,11 @@ b, strong {
     svg {
       margin-right: 5px;
     }
+
+    .list-menu {
+      float: right;
+      height: 30px;
+    }
   }
 
   .selected > a {
@@ -85,6 +91,7 @@ b, strong {
 
 .sections-list {
   width: 200px;
+  position: relative;
 }
 
 .pages-list {
@@ -112,8 +119,13 @@ b, strong {
 }
 
 .create-form {
-  margin: 20px 0;
+  position: absolute;
+  bottom: 0;
   padding: 0 5px;
+
+  .create-form-item {
+    margin: 10px 0;
+  }
 }
 
 .avatar-icon {
