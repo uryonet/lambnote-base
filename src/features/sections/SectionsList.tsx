@@ -14,6 +14,7 @@ import { fetchPagesData } from '../pages/pagesSlice'
 import { Button, FormControl, InputGroup } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus'
+import { faFolder } from '@fortawesome/free-solid-svg-icons/faFolder'
 
 export const SectionsList: React.FC = () => {
   const dispatch = useDispatch()
@@ -83,6 +84,7 @@ export const SectionsList: React.FC = () => {
           return (
             <li key={id} className={id === currentSectionId ? 'selected' : ''}>
               <a href="#" onClick={() => handleSection(id, displayName)}>
+                <FontAwesomeIcon icon={faFolder} />
                 {displayName}
               </a>
               {/*<Button*/}

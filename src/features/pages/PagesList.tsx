@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { createNewPage, fetchPageData, selectPages, deletePage } from './pagesSlice'
+import { createNewPage } from './pagesSlice'
 import { selectSections } from '../sections/sectionsSlice'
 
 import { Button, FormControl, InputGroup } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus'
+import { PagesListItem } from './PagesListItems'
 
 export const PagesList: React.FC = () => {
   const dispatch = useDispatch()
   const { currentSectionId } = useSelector(selectSections)
-  const { currentPageId, pages } = useSelector(selectPages)
   const [pageName, setPageName] = useState('')
   const [isShowForm, setIsShowFrom] = useState(false)
 
@@ -24,21 +24,8 @@ export const PagesList: React.FC = () => {
     setIsShowFrom(!isShowForm)
   }
 
-  const handlePage = (id: string | undefined) => {
-    if (id) {
-      dispatch(fetchPageData(id))
-    }
-  }
-
   const showForm = () => {
     setIsShowFrom(!isShowForm)
-  }
-
-  const handleDelPage = (id: string | undefined) => {
-    const result = window.confirm('ページを削除します')
-    if (result && id) {
-      dispatch(deletePage(id))
-    }
   }
 
   return (
@@ -57,20 +44,7 @@ export const PagesList: React.FC = () => {
           </InputGroup.Append>
         </InputGroup>
       </div>
-      <ul>
-        {pages.map(({ id, title }) => {
-          return (
-            <li key={id} className={id === currentSectionId ? 'selected' : ''}>
-              <a href="#" onClick={() => handlePage(id)}>
-                {title}
-              </a>
-              {/*<Button variant="danger" size="sm" className="listBtn" onClick={() => handleDelPage(id)}>*/}
-              {/*  x*/}
-              {/*</Button>*/}
-            </li>
-          )
-        })}
-      </ul>
+      <PagesListItem />
     </div>
   )
 }
