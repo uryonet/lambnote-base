@@ -2,6 +2,44 @@ body {
   margin: 0;
 }
 
-.sidebar {
+.wrapper {
+  display: flex;
+  height: 100vh;
+}
 
+.sidebar {
+  background-color: lightblue;
+  width: 400px;
+}
+
+.sidebar-header {
+  height: 120px;
+
+  h2 {
+    text-align: center;
+  }
+
+  .user-info {
+    margin-top: 50px;
+    position: relative;
+
+    .avatar-icon {
+      position: absolute;
+      top: 50%;
+      left: 80px;
+      transform: translateY(-50%);
+    }
+
+    span {
+      position: absolute;
+      top: 50%;
+      left: 140px;
+      transform: translateY(-50%);
+    }
+  }
+}
+
+.main-editor {
+  background-color: lightpink;
+  flex: 1;
 }

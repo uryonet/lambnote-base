@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Sidebar } from '../components/Sidebar'
+import { Sidebar } from 'components/Sidebar'
 import { Editor } from 'features/editor/Editor'
 import { LoginForm } from 'features/users/LoginForm'
 
