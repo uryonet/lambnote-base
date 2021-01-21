@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import { Header } from 'components/Header'
 import { Sidebar } from '../components/Sidebar'
 import { Editor } from 'features/editor/Editor'
 import { LoginForm } from 'features/users/LoginForm'
@@ -21,13 +20,10 @@ const App: React.FC = () => {
 
   if (authService.isAuth()) {
     return (
-      <>
+      <div className="wrapper">
         <Sidebar />
-        {/*<Header />*/}
-        {/*<div className="content">*/}
-        {/*  <Editor />*/}
-        {/*</div>*/}
-      </>
+        <Editor />
+      </div>
     )
   } else {
     return <LoginForm />
