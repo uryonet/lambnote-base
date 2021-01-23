@@ -1,15 +1,16 @@
 import React from 'react'
 import { SectionsList } from '../features/sections/SectionsList'
 import { PagesList } from '../features/pages/PagesList'
+import { UserInfo } from './UserInfo'
 
 export const Sidebar: React.FC = () => {
   return (
-    <nav id="sidebar" className="sidebar">
-      <header className="logo d-none d-md-block">LambNote</header>
+    <div className="sidebar">
+      <UserInfo />
       <div className="content-list">
         <SectionsList />
         <PagesList />
       </div>
-    </nav>
+    </div>
   )
 }

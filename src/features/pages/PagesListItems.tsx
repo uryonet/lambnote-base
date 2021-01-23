@@ -4,8 +4,6 @@ import { fetchPageData, selectPages, deletePage } from './pagesSlice'
 import { selectSections } from '../sections/sectionsSlice'
 
 import Spinner from 'react-bootstrap/Spinner'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFile } from '@fortawesome/free-solid-svg-icons/faFile'
 
 export const PagesListItem: React.FC = () => {
   const dispatch = useDispatch()
@@ -17,7 +15,6 @@ export const PagesListItem: React.FC = () => {
       dispatch(fetchPageData(id))
     }
   }
-
 
   if (isLoading) {
     return (
@@ -32,12 +29,8 @@ export const PagesListItem: React.FC = () => {
           return (
             <li key={id} className={id === currentSectionId ? 'selected' : ''}>
               <a href="#" onClick={() => handlePage(id)}>
-                <FontAwesomeIcon icon={faFile} />
                 {title}
               </a>
-              {/*<Button variant="danger" size="sm" className="listBtn" onClick={() => handleDelPage(id)}>*/}
-              {/*  x*/}
-              {/*</Button>*/}
             </li>
           )
         })}

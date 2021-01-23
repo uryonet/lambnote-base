@@ -3,8 +3,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { createNewPage, deletePage, selectPages } from './pagesSlice'
 import { selectSections } from '../sections/sectionsSlice'
 
-import { Button, FormControl, InputGroup } from 'react-bootstrap'
 import { PagesListItem } from './PagesListItems'
+
+import { Button } from 'primereact/button'
+import { InputText } from 'primereact/inputtext'
 
 export const PagesList: React.FC = () => {
   const dispatch = useDispatch()
@@ -21,33 +23,23 @@ export const PagesList: React.FC = () => {
     setPageName('')
   }
 
-  const handleDelPage = (id: string | undefined) => {
+  const handleDelPage = () => {
     const result = window.confirm('ページを削除します')
-    if (result && id) {
-      dispatch(deletePage(id))
+    if (result && currentPageId) {
+      dispatch(deletePage(currentPageId))
     }
   }
 
   return (
     <div className="pages-list">
-      <h5 className="sidebar-nav-title">ページ</h5>
+      <h3>ページ</h3>
       <PagesListItem />
-      <div className="create-form">
-        <InputGroup className="create-form-item" size="sm">
-          <FormControl value={pageName} onChange={onChangeNewPage} />
-          <InputGroup.Append>
-            <Button onClick={handleCreatePage}>作成</Button>
-          </InputGroup.Append>
-        </InputGroup>
-        <Button
-          className="create-form-item"
-          variant="danger"
-          size="sm"
-          block
-          onClick={() => handleDelPage(currentPageId)}
-        >
-          削除
-        </Button>
+      <div className="p-field p-inputgroup">
+        <InputText value={pageName} onChange={onChangeNewPage} />
+        <Button label="作成" onClick={handleCreatePage} />
+      </div>
+      <div className="p-field">
+        <Button className="p-button-danger l-btn-block" label="削除" onClick={handleDelPage} />
       </div>
     </div>
   )
