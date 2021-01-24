@@ -9,7 +9,9 @@ import schema from 'lib/prosemirror/schema'
 import { pmPlugins } from '../../lib/prosemirror/PmPlugins'
 import applyDevTools from 'prosemirror-dev-tools'
 
-import { Button, Col, Form, Row } from 'react-bootstrap'
+import { Col, Form, Row } from 'react-bootstrap'
+import { InputText } from 'primereact/inputtext'
+import { Button } from 'primereact/button'
 
 export const Editor: React.FC = () => {
   const dispatch = useDispatch()
@@ -96,22 +98,20 @@ export const Editor: React.FC = () => {
 
   return (
     <div className="main-editor">
-      <Form>
-        <Form.Group as={Row}>
-          <Form.Label column sm="2">
-            タイトル
-          </Form.Label>
-          <Col sm="7">
-            <Form.Control className="mr-3" value={pageTitle} onChange={handleTitleChange} />
-          </Col>
-          <Col sm="3">
-            <Button onClick={handleUpdateTitle}>タイトル保存</Button>
-          </Col>
-        </Form.Group>
-      </Form>
-      <h2>コンテンツ</h2>
-      <Button onClick={handleUpdateContent}>コンテンツ保存</Button>
-      <div className="editor" ref={pmEditor} />
+      <Button label="タイトル保存" onClick={handleUpdateTitle} />
+      <div className="p-fluid">
+        <div className="p-field">
+          <label htmlFor="title">タイトル</label>
+          <InputText id="title" value={pageTitle} onChange={handleTitleChange} />
+        </div>
+      </div>
+      <Button label="コンテンツ保存" onClick={handleUpdateContent} />
+      <div className="p-fluid">
+        <div className="p-field">
+          <label>コンテンツ</label>
+          <div ref={pmEditor} />
+        </div>
+      </div>
     </div>
   )
 }
