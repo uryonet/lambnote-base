@@ -9,7 +9,6 @@ import schema from 'lib/prosemirror/schema'
 import { pmPlugins } from '../../lib/prosemirror/PmPlugins'
 import applyDevTools from 'prosemirror-dev-tools'
 
-import { Col, Form, Row } from 'react-bootstrap'
 import { InputText } from 'primereact/inputtext'
 import { Button } from 'primereact/button'
 
@@ -65,13 +64,17 @@ export const Editor: React.FC = () => {
     return () => eView.current?.destroy()
   }, [])
 
-  //NoteContentStateが更新された場合のみ動作する
+  //NoteContentIdが更新された場合のみ動作する
+  useEffect(() => {
+    setPageTitle(currentPageTitle)
+  }, [currentPageId])
+
+  //NoteContentBodyが更新された場合のみ動作する
   useEffect(() => {
     if (renderFlgRef.current) {
       console.log('editorStateの更新')
       const newState = createEditorState(currentPageBody)
       eView.current?.updateState(newState)
-      setPageTitle(currentPageTitle)
     } else {
       renderFlgRef.current = true
     }
