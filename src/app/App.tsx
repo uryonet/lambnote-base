@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { SidebarMenu } from 'components/SidebarMenu'
+import { BottomMenu } from 'components/BottomMenu'
 import { Editor } from 'features/editor/Editor'
 import { LoginForm } from 'features/users/LoginForm'
 
@@ -7,7 +8,6 @@ import * as authService from 'lib/graph/AuthService'
 import { useDispatch } from 'react-redux'
 import { fetchUserData } from 'features/users/userSlice'
 import { fetchLambNotebookData } from 'features/notes/noteSlice'
-import { BottomMenu } from '../components/BottomMenu'
 
 const App: React.FC = () => {
   const dispatch = useDispatch()
