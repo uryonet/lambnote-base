@@ -113,6 +113,7 @@ export const Editor: React.FC = () => {
           <div ref={pmEditor} />
         </div>
       </div>
+      <div className="editor-bottom p-d-md-none" />
     </div>
   )
 }

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Sidebar } from 'components/Sidebar'
+import { SidebarMenu } from 'components/SidebarMenu'
 import { Editor } from 'features/editor/Editor'
 import { LoginForm } from 'features/users/LoginForm'
 
@@ -7,6 +7,7 @@ import * as authService from 'lib/graph/AuthService'
 import { useDispatch } from 'react-redux'
 import { fetchUserData } from 'features/users/userSlice'
 import { fetchLambNotebookData } from 'features/notes/noteSlice'
+import { BottomMenu } from '../components/BottomMenu'
 
 const App: React.FC = () => {
   const dispatch = useDispatch()
@@ -21,8 +22,9 @@ const App: React.FC = () => {
   if (authService.isAuth()) {
     return (
       <div className="wrapper">
-        <Sidebar />
+        <SidebarMenu />
         <Editor />
+        <BottomMenu />
       </div>
     )
   } else {

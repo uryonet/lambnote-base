@@ -101,4 +101,17 @@ body {
   [contenteditable] {
     outline: 0px solid transparent;
   }
+
+  .editor-bottom {
+    height: 40px;
+  }
+}
+
+.bottombar {
+  background-color: lightslategrey;
+  overflow: hidden;
+  position: fixed;
+  bottom: 0;
+  height: 40px;
+  width: 100%;
 }
