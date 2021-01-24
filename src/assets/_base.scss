@@ -93,4 +93,8 @@ body {
   border-left: 1px solid lightgray;
   padding: 10px;
   overflow: scroll;
+
+  [contenteditable] {
+    outline: 0px solid transparent;
+  }
 }
