@@ -7,6 +7,7 @@ import * as authService from 'lib/graph/AuthService'
 import { useDispatch } from 'react-redux'
 import { fetchUserData } from 'features/users/userSlice'
 import { fetchLambNotebookData } from 'features/notes/noteSlice'
+import { BottomMenu } from '../components/BottomMenu'
 
 const App: React.FC = () => {
   const dispatch = useDispatch()
@@ -23,6 +24,7 @@ const App: React.FC = () => {
       <div className="wrapper">
         <Sidebar />
         <Editor />
+        <BottomMenu />
       </div>
     )
   } else {
