@@ -101,14 +101,12 @@ export const Editor: React.FC = () => {
       <Button label="タイトル保存" onClick={handleUpdateTitle} />
       <div className="p-fluid">
         <div className="p-field">
-          <label htmlFor="title">タイトル</label>
-          <InputText id="title" value={pageTitle} onChange={handleTitleChange} />
+          <InputText value={pageTitle} onChange={handleTitleChange} />
         </div>
       </div>
       <Button label="コンテンツ保存" onClick={handleUpdateContent} />
       <div className="p-fluid">
         <div className="p-field">
-          <label>コンテンツ</label>
           <div ref={pmEditor} />
         </div>
       </div>
