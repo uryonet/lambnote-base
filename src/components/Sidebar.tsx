@@ -5,7 +5,7 @@ import { UserInfo } from './UserInfo'
 
 export const Sidebar: React.FC = () => {
   return (
-    <div className="sidebar">
+    <div className="sidebar p-d-none p-d-md-block">
       <UserInfo />
       <div className="content-list">
         <SectionsList />
