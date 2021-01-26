@@ -1,10 +1,12 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchPageData, selectPages } from './pagesSlice'
+import { selectPages } from './pagesSlice'
+import { fetchPageData, selectPage } from './pageSlice'
 
 export const PagesListItem: React.FC = () => {
   const dispatch = useDispatch()
-  const { pages, currentPageId } = useSelector(selectPages)
+  const { pages } = useSelector(selectPages)
+  const { currentPageId } = useSelector(selectPage)
 
   const handlePage = (id: string | undefined) => {
     if (id) {

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { selectPages, updatePageContent, updatePageTitle } from 'features/pages/pagesSlice'
+import { selectPage, updatePageTitle, updatePageContent } from 'features/pages/pageSlice'
 
 import { EditorState } from 'prosemirror-state'
 import { EditorView } from 'prosemirror-view'
@@ -15,7 +15,7 @@ import { Button } from 'primereact/button'
 export const Editor: React.FC = () => {
   const dispatch = useDispatch()
   const [pageTitle, setPageTitle] = useState('')
-  const { isLoading, currentPageId, currentPageTitle, currentPageBody, currentDivId } = useSelector(selectPages)
+  const { isLoading, currentPageId, currentPageTitle, currentPageBody, currentDivId } = useSelector(selectPage)
 
   const pmEditor = useRef<HTMLDivElement>(null)
   const eView = useRef<EditorView | null>(null)
