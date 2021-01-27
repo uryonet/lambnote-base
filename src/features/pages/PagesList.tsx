@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { createNewPage, deletePage, selectPages } from './pagesSlice'
+import { createNewPage, deletePage } from './pagesSlice'
+import { selectPage } from './pageSlice'
 import { selectSections } from '../sections/sectionsSlice'
 
 import { PagesListItem } from './PagesListItems'
@@ -11,7 +12,7 @@ import { InputText } from 'primereact/inputtext'
 export const PagesList: React.FC = () => {
   const dispatch = useDispatch()
   const { currentSectionId } = useSelector(selectSections)
-  const { currentPageId } = useSelector(selectPages)
+  const { currentPageId } = useSelector(selectPage)
   const [pageName, setPageName] = useState('')
 
   const onChangeNewPage = (event: React.ChangeEvent<HTMLInputElement>) => {

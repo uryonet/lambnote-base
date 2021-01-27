@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { selectPages, updatePageContent, updatePageTitle } from 'features/pages/pagesSlice'
+import { selectPage, updatePageData } from 'features/pages/pageSlice'
 
 import { EditorState } from 'prosemirror-state'
 import { EditorView } from 'prosemirror-view'
@@ -15,7 +15,7 @@ import { Button } from 'primereact/button'
 export const Editor: React.FC = () => {
   const dispatch = useDispatch()
   const [pageTitle, setPageTitle] = useState('')
-  const { currentPageId, currentPageTitle, currentPageBody, currentDivId } = useSelector(selectPages)
+  const { isLoading, currentPageId, currentPageTitle, currentPageBody, currentDivId } = useSelector(selectPage)
 
   const pmEditor = useRef<HTMLDivElement>(null)
   const eView = useRef<EditorView | null>(null)
@@ -80,35 +80,32 @@ export const Editor: React.FC = () => {
     }
   }, [currentPageBody])
 
-  const handleUpdateTitle = () => {
-    dispatch(updatePageTitle(currentPageId, pageTitle))
-  }
-
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPageTitle(event.target.value)
   }
 
-  const handleUpdateContent = () => {
+  const handleUpdatePage = () => {
     const doc = eView.current?.state.doc.content
     if (doc) {
       const docHtml = DOMSerializer.fromSchema(schema).serializeFragment(doc)
       const container = document.createElement('article')
       container.appendChild(docHtml)
-      console.log(container.innerHTML)
-      dispatch(updatePageContent(currentPageId, currentDivId, container.innerHTML))
+      dispatch(updatePageData(currentPageId, pageTitle, currentDivId, container.innerHTML))
     }
   }
 
   return (
     <div className="main-editor">
-      <Button label="タイトル保存" onClick={handleUpdateTitle} />
+      <Button
+        className="p-mb-3"
+        label="保存"
+        onClick={handleUpdatePage}
+        icon={isLoading ? 'pi pi-spin pi-spinner' : ''}
+      />
       <div className="p-fluid">
         <div className="p-field">
           <InputText value={pageTitle} onChange={handleTitleChange} />
         </div>
-      </div>
-      <Button label="コンテンツ保存" onClick={handleUpdateContent} />
-      <div className="p-fluid">
         <div className="p-field">
           <div ref={pmEditor} />
         </div>
