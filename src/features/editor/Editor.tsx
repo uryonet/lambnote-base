@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { selectPage, updatePageTitle, updatePageContent } from 'features/pages/pageSlice'
+import { selectPage, updatePageData } from 'features/pages/pageSlice'
 
 import { EditorState } from 'prosemirror-state'
 import { EditorView } from 'prosemirror-view'
@@ -85,13 +85,12 @@ export const Editor: React.FC = () => {
   }
 
   const handleUpdatePage = () => {
-    dispatch(updatePageTitle(currentPageId, pageTitle))
     const doc = eView.current?.state.doc.content
     if (doc) {
       const docHtml = DOMSerializer.fromSchema(schema).serializeFragment(doc)
       const container = document.createElement('article')
       container.appendChild(docHtml)
-      dispatch(updatePageContent(currentPageId, currentDivId, container.innerHTML))
+      dispatch(updatePageData(currentPageId, pageTitle, currentDivId, container.innerHTML))
     }
   }
 

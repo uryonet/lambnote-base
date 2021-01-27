@@ -4,12 +4,15 @@ import graphService from 'lib/graph/GraphService'
 import { setPagesTitle } from './pagesSlice'
 import { RootState } from '../../app/rootReducer'
 
-export interface PageInfo {
+export interface PageTitleInfo {
   currentPageId: string
   currentPageTitle: string
+}
+
+export type PageInfo = {
   currentPageBody: string
   currentDivId: string | undefined
-}
+} & PageTitleInfo
 
 type PageState = {
   isLoading: boolean
@@ -62,15 +65,11 @@ export const pageSlice = createSlice({
       state.currentPageTitle = currentPageTitle
       state.currentPageBody = currentPageBody
       state.currentDivId = currentDivId
-    },
-    setPageTitle: (state, action: PayloadAction<PageInfo>) => {
-      const { currentPageTitle } = action.payload
-      state.currentPageTitle = currentPageTitle
     }
   }
 })
 
-export const { startLoading, failureLoading, setPageData, setPageTitle } = pageSlice.actions
+export const { startLoading, failureLoading, setPageData } = pageSlice.actions
 export default pageSlice.reducer
 
 export const selectPage = (state: RootState) => state.page
@@ -102,55 +101,49 @@ export const fetchPageData = (pageId: string): AppThunk => async (dispatch) => {
   }
 }
 
-export const updatePageTitle = (pageId: string, title: string): AppThunk => async (dispatch) => {
+export const updatePageData = (
+  pageId: string,
+  title: string,
+  divId: string | undefined,
+  body: string
+): AppThunk => async (dispatch, getState) => {
   try {
     dispatch(startLoading())
-    const stream: UpdateContent[] = [
-      {
+    let stream: UpdateContent[] = []
+    //更新後タイトルと更新前タイトルの値を比較
+    const { currentPageTitle, currentPageBody } = getState().page
+    if (title !== currentPageTitle) {
+      stream.push({
         target: 'title',
         action: 'replace',
         content: title
-      }
-    ]
-    await graphService.updatePageContent(pageId, stream)
-    const pageInfo: PageInfo = {
-      currentPageId: pageId,
-      currentPageTitle: title,
-      currentPageBody: '',
-      currentDivId: undefined
+      })
+      dispatch(
+        setPagesTitle({
+          currentPageId: pageId,
+          currentPageTitle: title
+        })
+      )
     }
-    dispatch(setPageTitle(pageInfo))
-    dispatch(setPagesTitle(pageInfo))
-    dispatch(fetchPageData(pageId))
-  } catch (e) {
-    console.log(e)
-  }
-}
-
-export const updatePageContent = (pageId: string, divId: string | undefined, body: string): AppThunk => async (
-  dispatch
-) => {
-  try {
-    dispatch(startLoading())
-    let stream: UpdateContent[]
-    if (divId) {
-      stream = [
-        {
+    //更新後ボディと更新前ボディの値を比較
+    if (body !== currentPageBody) {
+      if (divId) {
+        stream.push({
           target: divId,
           action: 'replace',
           content: body
-        }
-      ]
-    } else {
-      stream = [
-        {
+        })
+      } else {
+        stream.push({
           target: 'body',
           action: 'append',
           content: body
-        }
-      ]
+        })
+      }
     }
-    await graphService.updatePageContent(pageId, stream)
+    if (stream.length) {
+      await graphService.updatePageContent(pageId, stream)
+    }
     dispatch(fetchPageData(pageId))
   } catch (e) {
     console.log(e)

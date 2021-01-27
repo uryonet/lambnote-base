@@ -3,7 +3,7 @@ import { AppThunk } from 'app/store'
 import { RootState } from 'app/rootReducer'
 import graphService from 'lib/graph/GraphService'
 import { OnenotePage } from '@microsoft/microsoft-graph-types'
-import { PageInfo } from './pageSlice'
+import { PageTitleInfo } from './pageSlice'
 
 interface PagesInfo {
   pages: OnenotePage[]
@@ -41,7 +41,7 @@ export const pagesSlice = createSlice({
       state.error = null
       state.pages = action.payload
     },
-    setPagesTitle: (state, action: PayloadAction<PageInfo>) => {
+    setPagesTitle: (state, action: PayloadAction<PageTitleInfo>) => {
       const { currentPageId, currentPageTitle } = action.payload
       state.pages = state.pages.map((n) => {
         if (n.id === currentPageId) {
