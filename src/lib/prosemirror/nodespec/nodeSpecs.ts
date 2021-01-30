@@ -2,6 +2,7 @@ import { NodeSpec } from 'prosemirror-model'
 import OrderedMap from 'orderedmap'
 import TableNodeSpecs from '../TableNodeSpecs'
 
+// @ts-ignore
 const nodes: OrderedMap<NodeSpec> = OrderedMap.from({
   doc: {
     content: 'block+'
@@ -55,22 +56,20 @@ const nodes: OrderedMap<NodeSpec> = OrderedMap.from({
     }
   },
   ordered_list: {
+    attrs: { order: { default: 1 } },
     group: 'block',
-    content: 'list_item+'
-    // attrs: {
-    //   order: { default: 1 }
-    // },
-    // parseDOM: [
-    //   {
-    //     tag: 'ol',
-    //     getAttrs(dom: HTMLElement) {
-    //       return { order: dom.hasAttribute('start') ? dom.getAttribute('start') : 1 }
-    //     }
-    //   }
-    // ],
-    // toDOM(node: Node) {
-    //   return node.attrs.order == 1 ? olDOM : ['ol', { start: node.attrs.order }, 0]
-    // }
+    content: 'list_item+',
+    parseDOM: [
+      {
+        tag: 'ol',
+        getAttrs(dom: HTMLElement) {
+          return { order: dom.hasAttribute('start') ? dom.getAttribute('start') : 1 }
+        }
+      }
+    ],
+    toDOM(node) {
+      return node.attrs.order == 1 ? ['ol', 0] : ['ol', { start: node.attrs.order }, 0]
+    }
   },
   bullet_list: {
     group: 'block',

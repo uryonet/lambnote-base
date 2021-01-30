@@ -15,6 +15,15 @@ const headingRule = (nodeType: NodeType, maxLevel: number): InputRule => {
   }))
 }
 
+const orderedListRule = (nodeType: NodeType): InputRule => {
+  return wrappingInputRule(
+    /^(\d+)\.\s$/,
+    nodeType,
+    (match) => ({ order: +match[1] }),
+    (match, node) => node.childCount + node.attrs.order == +match[1]
+  )
+}
+
 const bulletListRule = (nodeType: NodeType): InputRule => {
   return wrappingInputRule(/^\s*([-+*])\s$/, nodeType)
 }
@@ -28,6 +37,9 @@ const markdownInputRules = (schema: Schema) => {
   let type
   if ((type = schema.nodes.heading)) {
     rules.push(headingRule(type, 3))
+  }
+  if ((type = schema.nodes.ordered_list)) {
+    rules.push(orderedListRule(type))
   }
   if ((type = schema.nodes.bullet_list)) {
     rules.push(bulletListRule(type))
