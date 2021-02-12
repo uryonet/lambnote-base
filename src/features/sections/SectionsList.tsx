@@ -122,9 +122,6 @@ export const SectionsList: React.FC = () => {
           )
         })}
       </ul>
-      <div className="p-field">
-        <Button className="p-button-danger l-btn-block" label="削除" onClick={handleDelSection} />
-      </div>
 
       <Dialog header="新規セクション作成" visible={newSectionDialog} onHide={() => setNewSectionDialog(false)}>
         <div className="p-formgroup-inline">
