@@ -13,6 +13,7 @@ import { fetchPagesData } from '../pages/pagesSlice'
 
 import { Button } from 'primereact/button'
 import { InputText } from 'primereact/inputtext'
+import { Dialog } from 'primereact/dialog'
 
 export const SectionsList: React.FC = () => {
   const dispatch = useDispatch()
@@ -20,6 +21,7 @@ export const SectionsList: React.FC = () => {
   const { currentSectionId, currentSectionName, sections } = useSelector(selectSections)
   const [newSectionName, setNewSectionName] = useState('')
   const [renewSectionName, setRenewSectionName] = useState('')
+  const [newSectionDialog, setNewSectionDialog] = useState(false)
 
   useEffect(() => {
     if (lambnoteId) {
@@ -42,6 +44,7 @@ export const SectionsList: React.FC = () => {
   const handleCreateSection = () => {
     dispatch(createNewSection(lambnoteId, newSectionName))
     setNewSectionName('')
+    setNewSectionDialog(false)
   }
 
   const handleSection = (id: string | undefined, name: string | null | undefined) => {
@@ -66,7 +69,14 @@ export const SectionsList: React.FC = () => {
 
   return (
     <div className="sections-list">
-      <h3>セクション</h3>
+      <div className="section-hedaer">
+        <span>セクション</span>
+        <Button
+          icon="pi pi-plus"
+          className="p-button-rounded p-button-text"
+          onClick={() => setNewSectionDialog(true)}
+        />
+      </div>
       <ul>
         {sections.map(({ id, displayName }) => {
           return (
@@ -79,16 +89,21 @@ export const SectionsList: React.FC = () => {
         })}
       </ul>
       <div className="p-field p-inputgroup">
-        <InputText value={newSectionName} onChange={onChangeNewSection} />
-        <Button label="作成" onClick={handleCreateSection} />
-      </div>
-      <div className="p-field p-inputgroup">
         <InputText value={renewSectionName} onChange={onChangeRenewSection} />
         <Button className="p-button-warning" label="変更" onClick={handleChangeSectionName} />
       </div>
       <div className="p-field">
         <Button className="p-button-danger l-btn-block" label="削除" onClick={handleDelSection} />
       </div>
+
+      <Dialog header="新規セクション作成" visible={newSectionDialog} onHide={() => setNewSectionDialog(false)}>
+        <div className="p-formgroup-inline">
+          <div className="p-field">
+            <InputText value={newSectionName} onChange={onChangeNewSection} />
+          </div>
+          <Button label="作成" onClick={handleCreateSection} />
+        </div>
+      </Dialog>
     </div>
   )
 }
