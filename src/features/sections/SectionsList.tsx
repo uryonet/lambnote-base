@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectNote } from 'features/notes/noteSlice'
 import {
@@ -14,6 +14,7 @@ import { fetchPagesData } from '../pages/pagesSlice'
 import { Button } from 'primereact/button'
 import { InputText } from 'primereact/inputtext'
 import { Dialog } from 'primereact/dialog'
+import { ContextMenu } from 'primereact/contextmenu'
 
 export const SectionsList: React.FC = () => {
   const dispatch = useDispatch()
@@ -22,6 +23,22 @@ export const SectionsList: React.FC = () => {
   const [newSectionName, setNewSectionName] = useState('')
   const [renewSectionName, setRenewSectionName] = useState('')
   const [newSectionDialog, setNewSectionDialog] = useState(false)
+  const [renewSectionDialog, setRenewSectionDialog] = useState(false)
+  const cm = useRef(null)
+  const contextMenuItems = [
+    {
+      label: '名前の変更',
+      command: () => {
+        setRenewSectionDialog(true)
+      }
+    },
+    {
+      label: '削除',
+      command: () => {
+        handleDelSection()
+      }
+    }
+  ]
 
   useEffect(() => {
     if (lambnoteId) {
@@ -42,9 +59,9 @@ export const SectionsList: React.FC = () => {
   }
 
   const handleCreateSection = () => {
+    setNewSectionDialog(false)
     dispatch(createNewSection(lambnoteId, newSectionName))
     setNewSectionName('')
-    setNewSectionDialog(false)
   }
 
   const handleSection = (id: string | undefined, name: string | null | undefined) => {
@@ -55,6 +72,7 @@ export const SectionsList: React.FC = () => {
   }
 
   const handleChangeSectionName = () => {
+    setRenewSectionDialog(false)
     if (currentSectionId && renewSectionName) {
       dispatch(changeSectionName(currentSectionId, renewSectionName))
     }
@@ -67,6 +85,18 @@ export const SectionsList: React.FC = () => {
     }
   }
 
+  const handleContextMenu = (
+    event: React.MouseEvent<HTMLAnchorElement>,
+    id: string | undefined,
+    name: string | null | undefined
+  ) => {
+    if (id && name) {
+      dispatch(setCurrentSectionInfo({ currentSectionId: id, currentSectionName: name }))
+    }
+    // @ts-ignore
+    cm.current.show(event)
+  }
+
   return (
     <div className="sections-list">
       <div className="section-hedaer">
@@ -77,21 +107,21 @@ export const SectionsList: React.FC = () => {
           onClick={() => setNewSectionDialog(true)}
         />
       </div>
-      <ul>
+      <ul className="list-items">
         {sections.map(({ id, displayName }) => {
           return (
             <li key={id} className={id === currentSectionId ? 'selected' : ''}>
-              <a href="#" onClick={() => handleSection(id, displayName)}>
+              <a
+                href="#"
+                onClick={() => handleSection(id, displayName)}
+                onContextMenu={(event) => handleContextMenu(event, id, displayName)}
+              >
                 {displayName}
               </a>
             </li>
           )
         })}
       </ul>
-      <div className="p-field p-inputgroup">
-        <InputText value={renewSectionName} onChange={onChangeRenewSection} />
-        <Button className="p-button-warning" label="変更" onClick={handleChangeSectionName} />
-      </div>
       <div className="p-field">
         <Button className="p-button-danger l-btn-block" label="削除" onClick={handleDelSection} />
       </div>
@@ -104,6 +134,17 @@ export const SectionsList: React.FC = () => {
           <Button label="作成" onClick={handleCreateSection} />
         </div>
       </Dialog>
+
+      <Dialog header="セクション名前変更" visible={renewSectionDialog} onHide={() => setRenewSectionDialog(false)}>
+        <div className="p-formgroup-inline">
+          <div className="p-field">
+            <InputText value={renewSectionName} onChange={onChangeRenewSection} />
+          </div>
+          <Button label="変更" onClick={handleChangeSectionName} />
+        </div>
+      </Dialog>
+
+      <ContextMenu model={contextMenuItems} ref={cm} />
     </div>
   )
 }

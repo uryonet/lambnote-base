@@ -15,7 +15,7 @@ export const PagesListItem: React.FC = () => {
   }
 
   return (
-    <ul>
+    <ul className="list-items">
       {pages.map(({ id, title }) => {
         return (
           <li key={id} className={id === currentPageId ? 'selected' : ''}>
