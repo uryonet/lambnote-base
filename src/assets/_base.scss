@@ -59,30 +59,30 @@ body {
     padding: 0 5px;
   }
 
-  ul {
+  .list-items {
     list-style: none;
     padding: 0;
-  }
 
-  li {
-    display: inline-block;
-    margin: 0;
-    padding: 0;
-    vertical-align: top;
+    li {
+      display: inline-block;
+      margin: 0;
+      padding: 0;
+      vertical-align: top;
 
-    a {
-      display: block;
-      text-decoration: none;
-      height: 30px;
-      width: 190px;
-      line-height: 30px;
-      padding: 0 10px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      a {
+        display: block;
+        text-decoration: none;
+        height: 30px;
+        width: 190px;
+        line-height: 30px;
+        padding: 0 10px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
 
-      &:hover {
-        background-color: lightgray;
+        &:hover {
+          background-color: lightgray;
+        }
       }
     }
   }
