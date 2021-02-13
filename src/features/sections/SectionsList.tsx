@@ -15,6 +15,7 @@ import { Button } from 'primereact/button'
 import { InputText } from 'primereact/inputtext'
 import { Dialog } from 'primereact/dialog'
 import { ContextMenu } from 'primereact/contextmenu'
+import { Menu } from 'primereact/menu'
 
 export const SectionsList: React.FC = () => {
   const dispatch = useDispatch()
@@ -25,7 +26,13 @@ export const SectionsList: React.FC = () => {
   const [newSectionDialog, setNewSectionDialog] = useState(false)
   const [renewSectionDialog, setRenewSectionDialog] = useState(false)
   const cm = useRef(null)
-  const contextMenuItems = [
+  const sectionMenuItems = [
+    {
+      label: '新規作成',
+      command: () => {
+        setNewSectionDialog(true)
+      }
+    },
     {
       label: '名前の変更',
       command: () => {
@@ -85,37 +92,22 @@ export const SectionsList: React.FC = () => {
     }
   }
 
-  const handleContextMenu = (
-    event: React.MouseEvent<HTMLAnchorElement>,
-    id: string | undefined,
-    name: string | null | undefined
-  ) => {
-    if (id && name) {
-      dispatch(setCurrentSectionInfo({ currentSectionId: id, currentSectionName: name }))
-    }
-    // @ts-ignore
-    cm.current.show(event)
-  }
-
   return (
     <div className="sections-list">
       <div className="section-hedaer">
         <span>セクション</span>
         <Button
-          icon="pi pi-plus"
+          icon="pi pi-ellipsis-h"
           className="p-button-rounded p-button-text"
-          onClick={() => setNewSectionDialog(true)}
+          // @ts-ignore
+          onClick={(event) => cm.current.toggle(event)}
         />
       </div>
       <ul className="list-items">
         {sections.map(({ id, displayName }) => {
           return (
             <li key={id} className={id === currentSectionId ? 'selected' : ''}>
-              <a
-                href="#"
-                onClick={() => handleSection(id, displayName)}
-                onContextMenu={(event) => handleContextMenu(event, id, displayName)}
-              >
+              <a href="#" onClick={() => handleSection(id, displayName)}>
                 {displayName}
               </a>
             </li>
@@ -124,7 +116,7 @@ export const SectionsList: React.FC = () => {
       </ul>
 
       <Dialog header="新規セクション作成" visible={newSectionDialog} onHide={() => setNewSectionDialog(false)}>
-        <div className="p-formgroup-inline">
+        <div className="p-formgroup-inline p-mt-3">
           <div className="p-field">
             <InputText value={newSectionName} onChange={onChangeNewSection} />
           </div>
@@ -133,7 +125,7 @@ export const SectionsList: React.FC = () => {
       </Dialog>
 
       <Dialog header="セクション名前変更" visible={renewSectionDialog} onHide={() => setRenewSectionDialog(false)}>
-        <div className="p-formgroup-inline">
+        <div className="p-formgroup-inline p-mt-3">
           <div className="p-field">
             <InputText value={renewSectionName} onChange={onChangeRenewSection} />
           </div>
@@ -141,7 +133,7 @@ export const SectionsList: React.FC = () => {
         </div>
       </Dialog>
 
-      <ContextMenu model={contextMenuItems} ref={cm} />
+      <Menu model={sectionMenuItems} popup ref={cm} />
     </div>
   )
 }
