@@ -14,12 +14,17 @@ export const PagesListItem: React.FC = () => {
     }
   }
 
+  const handleContextMenu = (event: React.MouseEvent<HTMLAnchorElement>, id: string | undefined, name: string | null | undefined) => {
+    
+  }
+
+
   return (
     <ul className="list-items">
       {pages.map(({ id, title }) => {
         return (
           <li key={id} className={id === currentPageId ? 'selected' : ''}>
-            <a href="#" onClick={() => handlePage(id)}>
+            <a href="#" onClick={() => handlePage(id)} onContextMenu={(event) => handleContextMenu}>
               {title}
             </a>
           </li>
