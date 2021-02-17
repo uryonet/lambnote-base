@@ -104,7 +104,7 @@ export const Editor: React.FC = () => {
       />
       <div className="p-fluid">
         <div className="p-field">
-          <InputText value={pageTitle} onChange={handleTitleChange} />
+          <InputText className="p-inputtext-lg" value={pageTitle} onChange={handleTitleChange} />
         </div>
         <div className="p-field">
           <div ref={pmEditor} />
